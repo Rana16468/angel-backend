@@ -16,6 +16,8 @@ import handle_unpaid_payment from "./app/utils/handle_unpaid_payment";
 import createOrUpdateSuperAdmin from "./app/utils/superAdmin";
 import autoDeleteSupport from "./app/utils/autoDeleteSupport";
 import autoDeleteStoryAfter24Hours from "./app/utils/autoDeleteStoryAfter24Hours";
+import systemArtc from "./app/utils/metrics/systemArtc";
+import monitorRouter from "./app/utils/metrics/metricsMiddleware";
 
 declare global {
   namespace Express {
@@ -62,10 +64,7 @@ app.use(
 // delete expaire subscription auto delete
 
 app.get("/", (_req, res) => {
-  res.send({
-    status: true,
-    message: "Welcome to event management -service Api",
-  });
+  res.send(systemArtc());
 });
 
 // auto_delete_unverifyed_user
@@ -130,6 +129,8 @@ cron.schedule('*/30 * * * *', async () => {
   }
 });
 
+app.use("/api/v1", router);
+app.use("/api/v1/monitor", monitorRouter); // ← metrics endpoint
 
 
 app.use("/api/v1", router);
