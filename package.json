@@ -1,0 +1,74 @@
+{
+  "name": "ts-express-kit",
+  "version": "1.1.4",
+  "description": "A TypeScript starter kit for building Express applications with best practices.",
+  "main": "index.js",
+  "bin": {
+    "ts-express-kit": "./dist/bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/src/server.js",
+    "lint": "eslint src --ignore-path .eslintignore --ext .ts",
+    "lint:fix": "npx eslint src --fix",
+    "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
+    "prettier:fix": "npx prettier --write src",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "prod": "node ./dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "node",
+    "ts-express-kit"
+  ],
+  "author": "Nasim",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nazmulhasannasim333/ts-express-kit.git"
+  },
+  "dependencies": {
+    "@paypal/paypal-server-sdk": "^1.1.0",
+    "agora-token": "^2.0.5",
+    "axios": "^1.12.2",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.18",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "firebase-admin": "^13.5.0",
+    "geolib": "^3.3.4",
+    "http-status": "^2.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.6",
+    "socket.io": "^4.8.1",
+    "stripe": "^19.0.0",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/nodemailer": "^7.0.1",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
