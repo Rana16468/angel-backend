@@ -351,15 +351,18 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
     }
 
     
-    const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
-      data.date,
-      data.starting_time,
-      data.ending_time
-    );
+// ⚡ ৩. টাইম হ্যান্ডলিং ও সঠিক UTC রূপান্তর
+    if (data.starting_time && data.ending_time) {
+      const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
+        rawDate,
+        data.starting_time,
+        data.ending_time
+      );
 
-   
-    data.starting_time = startDateTime;
-    data.ending_time = endDateTime;
+      // ⚠️ আগে আপনি updateData অবজেক্টে এগুলো সেট করেননি! এখন ঠিক করা হলো:
+      updateData.starting_time = startDateTime;
+      updateData.ending_time = endDateTime;
+    }
 
     // ⚡ ৪. স্টার্ট এবং এন্ড টাইমের পারস্পরিক সময় ভ্যালিডেশন Check
     if (new Date(finalEndUTC) <= new Date(finalStartUTC)) {
