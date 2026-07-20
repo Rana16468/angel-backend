@@ -1,30 +1,3 @@
-// // Convert "4:14 AM"/"4:14 PM" to 24-hour ISO string without timezone conversion
-// const convertTo24Hour = (timeStr: string) => {
-//   const [time, modifier] = timeStr.split(" ");
-//   let [hours, minutes] = time.split(":").map(Number);
-
-//   if (modifier.toUpperCase() === "PM" && hours < 12) hours += 12;
-//   if (modifier.toUpperCase() === "AM" && hours === 12) hours = 0;
-
-//   return {
-//     hours: hours.toString().padStart(2, "0"),
-//     minutes: minutes.toString().padStart(2, "0"),
-//   };
-// };
-
-// export const toISODateTime = (dateStr?: string, timeStr?: string) => {
-//   if (!dateStr || !timeStr) return null;
-
-//   const [year, month, day] = dateStr.split("-"); // YYYY-MM-DD
-//   const { hours, minutes } = convertTo24Hour(timeStr);
-
-//   // Construct ISO string WITHOUT converting timezone
-//   return `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
-// };
-
-// export const toISOEndDateTime = toISODateTime;
-
-
 export const convertTo24Hour = (time: string) => {
   if (!time) throw new Error("Time is required");
 
@@ -34,7 +7,7 @@ export const convertTo24Hour = (time: string) => {
     throw new Error(`Invalid time format: ${time}`);
   }
 
-  let hours = parseInt(match[1]);
+  let hours = parseInt(match[1], 10);
   const minutes = match[2];
   const modifier = match[3].toUpperCase();
 
@@ -59,15 +32,15 @@ export const toESTISODateTime = (dateStr?: string, timeStr?: string) => {
 
   const { hours, minutes } = convertTo24Hour(timeStr);
 
-  const dateTimeString = `${dateStr}T${hours}:${minutes}:00`;
+  // কোনো সময় পরিবর্তন না করে সরাসরি ISO UTC (Z) ফরম্যাটে কনভার্ট
+  const dateTimeString = `${dateStr}T${hours}:${minutes}:00.000Z`;
 
-  const date = new Date(dateTimeString);
-
-  if (isNaN(date.getTime())) {
+  // তারিখটি ভ্যালিড কিনা চেক করা
+  if (isNaN(new Date(dateTimeString).getTime())) {
     throw new Error(`Invalid date generated: ${dateTimeString}`);
   }
 
-  return date.toISOString();
+  return dateTimeString;
 };
 
 export const toISOEndDateTime = toESTISODateTime;
