@@ -46,9 +46,10 @@ app.use(
 app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
+// রুট ডিরেক্টরি থেকে সরাসরি public ফোল্ডারকে সার্ভ করা
 app.use(
-  config.file_path as string,
-  express.static(path.join(__dirname, 'public')),
+  '/src/public',
+  express.static(path.resolve(process.cwd(), 'src', 'public'))
 );
 
 app.use(
