@@ -25,22 +25,51 @@ export const convertTo24Hour = (time: string) => {
   };
 };
 
-export const toESTISODateTime = (dateStr?: string, timeStr?: string) => {
+/**
+ * স্থানীয় তারিখ ও সময়কে সার্ভার/লোকাল টাইমজোন অনুযায়ী বাস্তব UTC ISO-তে কনভার্ট করবে
+ */
+export const toUTCISODateTime = (dateStr?: string, timeStr?: string): string => {
   if (!dateStr || !timeStr) {
     throw new Error("Date or time missing");
   }
 
   const { hours, minutes } = convertTo24Hour(timeStr);
 
-  // কোনো সময় পরিবর্তন না করে সরাসরি ISO UTC (Z) ফরম্যাটে কনভার্ট
-  const dateTimeString = `${dateStr}T${hours}:${minutes}:00.000Z`;
+  // ১. কোনো Z বা অফসেট ছাড়া লোকাল ISO স্ট্রিং তৈরি
+  const localDateTimeString = `${dateStr}T${hours}:${minutes}:00`;
 
-  // তারিখটি ভ্যালিড কিনা চেক করা
-  if (isNaN(new Date(dateTimeString).getTime())) {
-    throw new Error(`Invalid date generated: ${dateTimeString}`);
+  // ২. Local Date Instance তৈরি (যা লোকাল সিস্টেমের টাইমজোনকে ধরে নেবে)
+  const date = new Date(localDateTimeString);
+
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date generated: ${localDateTimeString}`);
   }
 
-  return dateTimeString;
+  // ৩. .toISOString() স্থানীয় সময়কে স্বয়ংক্রিয়ভাবে আসল UTC সময়ে পরিবর্তন করবে
+  return date.toISOString(); 
 };
 
-export const toISOEndDateTime = toESTISODateTime;
+/**
+ * ইভেন্টের স্টার্ট ও এন্ড টাইম ভ্যালিডেশনের সাহায্যকারী ফাংশন
+ */
+export const validateAndGetEventUTCInterval = (
+  dateStr: string,
+  startTimeStr: string,
+  endTimeStr: string
+) => {
+  const startUTC = toUTCISODateTime(dateStr, startTimeStr);
+  const endUTC = toUTCISODateTime(dateStr, endTimeStr);
+
+  const startDate = new Date(startUTC);
+  const endDate = new Date(endUTC);
+
+  // ইভেন্টের শেষ সময় শুরুর সময়ের পরে কিনা তা চেক করা
+  if (endDate <= startDate) {
+    throw new Error("End time must be after Start time");
+  }
+
+  return {
+    startDateTime: startUTC,
+    endDateTime: endUTC,
+  };
+};

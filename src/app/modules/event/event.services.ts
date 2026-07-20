@@ -17,9 +17,10 @@ import messages from "../message/message.model";
 import pointsystems from "../pointsystem/pointsystem.model";
 import ratings from "../rating/rating.model";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { toESTISODateTime, toISOEndDateTime } from "../../utils/toISODateTime";
+;
 import eventposts from "../event_post/event_post.model";
 import agoraAccessToken from "../../utils/agoraAccessToken/agoraAccessToken";
+import { validateAndGetEventUTCInterval } from "../../utils/toISODateTime";
 
 dayjs.extend(customParseFormat);
 
@@ -40,11 +41,26 @@ const createEventIntoDb = async (
 
     const data = req.body as any;
 
-    // convert date & time to ISO
-    data.starting_time = toESTISODateTime(data?.date, data?.starting_time);
-    data.ending_time = toISOEndDateTime(data?.date, data?.ending_time);
+    // ⚡ ১. তারিখ ও সময় ভ্যালিডেশন এবং UTC ISO কনভার্সন
+    if (!data?.date || !data?.starting_time || !data?.ending_time) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        "Date, starting_time, and ending_time are required"
+      );
+    }
 
-    // 1️⃣ Create Event
+    // আপনার নতুন হেল্পার ফাংশন দিয়ে ৩টি আর্গুমেন্ট পাস করা হচ্ছে
+    const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
+      data.date,
+      data.starting_time,
+      data.ending_time
+    );
+
+    // অবজেক্টে সঠিক UTC ISO ভ্যালু সেট করা
+    data.starting_time = startDateTime;
+    data.ending_time = endDateTime;
+
+    // 2️⃣ Create Event
     const eventBuilder = new events({ ...data, photo, hostId });
     const eventResult = await eventBuilder.save({ session });
 
@@ -55,12 +71,12 @@ const createEventIntoDb = async (
       );
     }
 
-    // 2️⃣ Create Chat Room FIRST
+    // 3️⃣ Create Chat Room FIRST
     const createChatRoomBuilder = new chatrooms({
       eventId: eventResult._id,
       chatRoomName: data?.event_title,
       hostId,
-      photo:photo
+      photo: photo,
     });
 
     const chatRoomResult = await createChatRoomBuilder.save({ session });
@@ -72,13 +88,13 @@ const createEventIntoDb = async (
       );
     }
 
-    // 3️⃣ Create Join Group WITH chatRoomId
+    // 4️⃣ Create Join Group WITH chatRoomId
     const createJoinGroupBuilder = new joingroups({
       eventId: eventResult._id,
       groupName: data?.event_title,
       hostId,
       chatRoomId: chatRoomResult._id, // ✅ REQUIRED FIELD
-      photo:photo
+      photo: photo,
     });
 
     const joinGroupResult = await createJoinGroupBuilder.save({ session });
@@ -98,7 +114,9 @@ const createEventIntoDb = async (
       message: "Successfully recorded",
     };
   } catch (error: any) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
 
     throw new AppError(
       status.SERVICE_UNAVAILABLE,
@@ -291,73 +309,67 @@ const addEventType = (events: any[]) => {
 };
 
 
-
-
-
-
-
-const findBySpecificEventIntoDb = async (id: string) => {
-  try {
-    const result = await joingroups
-      .findOne({ eventId: id }, { _id: 1 })
-      .populate(
-        "eventId",
-        "event_title description photo date starting_time ending_time audience_settings.age venue_facilities price audience_settings.event_location audience_settings.ticket_price audience_settings.price"
-      )
-      .lean(); // convert to plain object
-
-    if (!result || !result.eventId) {
-      return null;
-    }
-
-    const eventData = result.eventId as any;
-
-    // reshape output
-    const formattedData = {
-      ...eventData,              
-      groupId: result._id        
-    };
-
-    return formattedData;
-  } catch (error: any) {
-    throw new AppError(
-      status.SERVICE_UNAVAILABLE,
-      "Failed to fetch find By Specific Event"
-    );
-  }
-};
 const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
   try {
     const data = req.body as any;
     const file = req.file;
 
+    // ১. বিদ্যমান ইভেন্ট চেক করা
     const existingEvent = await events.findById(id);
     if (!existingEvent) {
-      throw new AppError(status.NOT_FOUND, "Event not found", "");
+      throw new AppError(status.NOT_FOUND, "Event not found");
     }
 
     const updateData: Record<string, any> = {};
 
-    // Basic fields
+    // বেসিক ফিল্ডস
     if (data.event_title) updateData.event_title = data.event_title;
     if (data.description) updateData.description = data.description;
     if (data.date) updateData.date = data.date;
 
-    // ✅ Convert starting & ending time safely
-    if (data.starting_time) {
-      updateData.starting_time =  toESTISODateTime(
-        data.date || existingEvent.date,
-        data.starting_time
-      );
+    // ⚡ ২. তারিখ ফিল্টার (YYYY-MM-DD ফরম্যাট নিশ্চিতকরণ)
+    let rawDate = data.date || existingEvent.date;
+
+    if (typeof rawDate === "string" && rawDate.includes("T")) {
+      rawDate = rawDate.split("T")[0];
+    } else if (rawDate instanceof Date) {
+      rawDate = rawDate.toISOString().split("T")[0];
     }
-    if (data.ending_time) {
-      updateData.ending_time = toISOEndDateTime(
-        data.date || existingEvent.date,
-        data.ending_time
+
+    const targetDate = rawDate;
+
+   
+    let finalStartUTC = existingEvent.starting_time;
+    let finalEndUTC = existingEvent.ending_time;
+
+    
+     if (!data?.date || !data?.starting_time || !data?.ending_time) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        "Date, starting_time, and ending_time are required"
       );
     }
 
-    // Audience settings nested fields
+    
+    const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
+      data.date,
+      data.starting_time,
+      data.ending_time
+    );
+
+   
+    data.starting_time = startDateTime;
+    data.ending_time = endDateTime;
+
+    // ⚡ ৪. স্টার্ট এবং এন্ড টাইমের পারস্পরিক সময় ভ্যালিডেশন Check
+    if (new Date(finalEndUTC) <= new Date(finalStartUTC)) {
+      throw new AppError(
+        status.BAD_REQUEST,
+        "Ending time must be after starting time"
+      );
+    }
+
+    // ৫. Audience settings nested fields
     if (data.audience_settings) {
       const aud = data.audience_settings;
 
@@ -399,14 +411,22 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       if (aud.price !== undefined) updateData["audience_settings.price"] = aud.price;
     }
 
-    // Handle new photo
+    // ⚡ ৬. নতুন ফটো আপডেট ও পুরোনো ফটো ফাইল নিরাপদভাবে ডিলিট
     if (file?.path) {
-      if (existingEvent.photo && fs.existsSync(existingEvent.photo)) {
-        fs.unlinkSync(path.resolve(existingEvent.photo));
+      if (existingEvent.photo) {
+        try {
+          const resolvedPath = path.resolve(existingEvent.photo);
+          if (fs.existsSync(resolvedPath)) {
+            fs.unlinkSync(resolvedPath);
+          }
+        } catch (fileErr) {
+          console.error("Failed to delete old event image:", fileErr);
+        }
       }
       updateData.photo = file.path.replace(/\\/g, "/");
     }
 
+    // ৭. ডাটাবেজে আপডেট
     const updatedEvent = await events
       .findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
       .lean();
@@ -417,12 +437,49 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
 
     return { status: true, message: "Successfully updated" };
   } catch (error: any) {
+    if (error instanceof AppError) throw error;
+
     throw new AppError(
       status.SERVICE_UNAVAILABLE,
       error.message || "Failed to update event in db"
     );
   }
 };
+
+
+
+
+const findBySpecificEventIntoDb = async (id: string) => {
+  try {
+    const result = await joingroups
+      .findOne({ eventId: id }, { _id: 1 })
+      .populate(
+        "eventId",
+        "event_title description photo date starting_time ending_time audience_settings.age venue_facilities price audience_settings.event_location audience_settings.ticket_price audience_settings.price"
+      )
+      .lean(); // convert to plain object
+
+    if (!result || !result.eventId) {
+      return null;
+    }
+
+    const eventData = result.eventId as any;
+
+    // reshape output
+    const formattedData = {
+      ...eventData,              
+      groupId: result._id        
+    };
+
+    return formattedData;
+  } catch (error: any) {
+    throw new AppError(
+      status.SERVICE_UNAVAILABLE,
+      "Failed to fetch find By Specific Event"
+    );
+  }
+};
+
 
 const deleteEventIntoDb = async (id: string): Promise<EventResponse> => {
   try {
