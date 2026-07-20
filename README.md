@@ -16,7 +16,7 @@
 
 ## Getting Started
 
-### 1. Install
+### 1. Installss
 
 ```bash
 npx ts-express-kit my-backend-app

@@ -146,20 +146,20 @@ const recordedEventCommentIntoDb = async (
     // -----------------------------
     // 5️⃣ Send push notification
     // -----------------------------
-    const pushResult = await NotificationServices.sendPushNotification(
-      isExistEventPost.userId.toString(), // send to event owner
-      {
-        title: notificationData.title,
-        content: notificationData.content,
-      }
-    );
+    // const pushResult = await NotificationServices.sendPushNotification(
+    //   isExistEventPost.userId.toString(), // send to event owner
+    //   {
+    //     title: notificationData.title,
+    //     content: notificationData.content,
+    //   }
+    // );
 
-    if (!pushResult) {
-      throw new AppError(
-        status.INTERNAL_SERVER_ERROR,
-        "Failed to send push notification"
-      );
-    }
+    // if (!pushResult) {
+    //   throw new AppError(
+    //     status.INTERNAL_SERVER_ERROR,
+    //     "Failed to send push notification"
+    //   );
+    // }
 
     // -----------------------------
     // 6️⃣ Commit transaction
