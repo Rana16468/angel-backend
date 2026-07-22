@@ -4,6 +4,7 @@ import { RequestWithFile, SocialFeedResponse, TSocialFeed } from "./social_feed.
 import socialfeeds from "./social_feed.model";
 import followups from "../followup/followup.model";
 import mongoose from "mongoose";
+import users from "../user/user.model";
 
 
 
@@ -43,7 +44,10 @@ const findByFollowWaieSocialFeedIntoDb = async (
 
   const userObjectId = new mongoose.Types.ObjectId(userId);
 
-  const result = await followups.aggregate([
+  const result = await users.aggregate([
+    // ✅ Anchor: নিজের user ডকুমেন্ট দিয়ে শুরু, তাই followups/socialfeeds/userstores
+    // খালি থাকলেও নিজের feed/story সবসময় দেখা যাবে
+    { $match: { _id: userObjectId } },
     { $limit: 1 },
 
     // Step 1: আমি যাদের follow করি তাদের id বের করো
@@ -103,10 +107,11 @@ const findByFollowWaieSocialFeedIntoDb = async (
     {
       $lookup: {
         from: "socialfeeds",
+        let: { myId: userObjectId },
         pipeline: [
           {
             $match: {
-              userId: userObjectId,
+              $expr: { $eq: ["$userId", "$$myId"] },
               isDelete: false,
             },
           },
