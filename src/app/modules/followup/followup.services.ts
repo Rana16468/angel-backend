@@ -80,8 +80,10 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
   const limit = Number(query.limit) || 10;
   const name = query?.name?.toString().trim();
 
-  // ✅ Get followed user IDs
-  const followedUsers = await followups
+  const currentUserObjectId = new mongoose.Types.ObjectId(userId);
+
+  // ✅ Get followed user IDs (ObjectId[] from .distinct())
+  const followedUsers: mongoose.Types.ObjectId[] = await followups
     .find({ userId, isDelete: false, isFollowUp: true })
     .distinct("followupId");
 
@@ -111,7 +113,7 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
     },
     { $unwind: { path: "$user", preserveNullAndEmptyArrays: false } },
 
-    // ---------- TAG PEOPLE (✅ FIXED) ----------
+    // ---------- TAG PEOPLE ----------
     {
       $lookup: {
         from: "users",
@@ -128,7 +130,7 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
         from: "reacteventposts",
         let: {
           postId: "$_id",
-          currentUserId: new mongoose.Types.ObjectId(userId),
+          currentUserId: currentUserObjectId,
         },
         pipeline: [
           {
@@ -152,7 +154,7 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
       $lookup: {
         from: "followups",
         let: {
-          currentUserId: new mongoose.Types.ObjectId(userId),
+          currentUserId: currentUserObjectId,
           postUserId: "$userId",
         },
         pipeline: [
@@ -192,16 +194,23 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
   ];
 
   // ---------- MAIN PIPELINE ----------
+  // Partition logic (mutually exclusive by construction, no dedup needed):
+  //
+  // followedPosts = posts by (followedUsers ∪ self)
+  // randomPosts   = posts by everyone else (NOT followed, NOT self)
+  //
+  // "self" is included in followedPosts so the viewer sees their own
+  // posts in their feed, same as Facebook/Instagram. If you don't want
+  // that, remove `currentUserObjectId` from the $in array below and add
+  // it back to randomPosts' $nin array (see commented alternative).
   const pipeline = [
     {
       $facet: {
         followedPosts: makePostPipeline(
           {
             isDelete: false,
-            eventId: { $exists: false }, // ✅ Exclude posts that have eventId
-            ...(followedUsers.length > 0 && {
-              userId: { $in: followedUsers },
-            }),
+            eventId: { $exists: false },
+            userId: { $in: [...followedUsers, currentUserObjectId] },
           },
           "followed"
         ),
@@ -209,8 +218,8 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
         randomPosts: makePostPipeline(
           {
             isDelete: false,
-            eventId: { $exists: false }, // ✅ Exclude posts that have eventId
-            userId: { $nin: [...followedUsers, userId] },
+            eventId: { $exists: false },
+            userId: { $nin: [...followedUsers, currentUserObjectId] },
           },
           "suggested"
         ),
@@ -228,13 +237,11 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
   const result = await eventposts.aggregate(pipeline as any);
 
   // ---------- TOTAL COUNT ----------
+  // Matches the full universe covered by followedPosts + randomPosts above
+  // (i.e. every non-deleted, non-event post — everyone, including self).
   const total = await eventposts.countDocuments({
     isDelete: false,
-    eventId: { $exists: false }, // ✅ Exclude posts that have eventId
-    $or: [
-      { userId: { $in: followedUsers } },
-      { userId: { $nin: [...followedUsers, userId] } },
-    ],
+    eventId: { $exists: false },
   });
 
   return {
