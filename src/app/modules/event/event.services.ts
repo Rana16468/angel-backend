@@ -21,6 +21,8 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import eventposts from "../event_post/event_post.model";
 import agoraAccessToken from "../../utils/agoraAccessToken/agoraAccessToken";
 import { validateAndGetEventUTCInterval } from "../../utils/toISODateTime";
+import sendEmail from "../../utils/sendEmail";
+import emailContext from "../../utils/emailcontext/sendvarificationData";
 
 dayjs.extend(customParseFormat);
 
@@ -108,6 +110,24 @@ const createEventIntoDb = async (
 
     // ✅ Commit Transaction
     await session.commitTransaction();
+
+   if (data.emailList) {
+  for (const email of data.emailList) {
+    await sendEmail(
+      email,
+      emailContext.sendEventInvitation(
+        email,                   
+        data.event_title,
+        data.date,
+        data.starting_time,
+        data.ending_time,
+        data.description,
+        photo
+      ),
+      `You're Invited: ${data.event_title}`
+    );
+  }
+}
 
     return {
       status: true,

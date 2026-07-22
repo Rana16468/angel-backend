@@ -86,6 +86,7 @@ export interface BaseEvent extends Document {
     | "Indoor"
     | "Outdoor";
   audience_settings: AudienceSettings;
+  emailList: string[];
   isDelete: boolean;
 }
 

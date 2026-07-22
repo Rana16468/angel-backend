@@ -5,4 +5,3 @@ build/
 uploads/
 coverage/
 *.log
-src/public/images/

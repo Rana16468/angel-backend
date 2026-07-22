@@ -72,16 +72,9 @@ const AudienceSettingsSchema = new Schema<AudienceSettings>(
     visibility: { type: String, enum: visibilityConstant, required: true, index:true },
     email: {
       type: String,
-      required: function (this: AudienceSettings) {
-        return this.visibility === "Private";
-      },
-      validate: {
-        validator: function (this: AudienceSettings, v: string) {
-          if (this.visibility === "Public" && v) return false;
-          return true;
-        },
-        message: "Email is only allowed when visibility is Private",
-      },
+      required:false
+      
+    
     },
     social_media: { type: SocialMediaSchema },
     notification: { type: NotificationSchema },
@@ -132,6 +125,7 @@ const TEventSchema = new Schema<BaseEvent, EventModel>(
       required: true,
     },
     audience_settings: { type: AudienceSettingsSchema, required: true },
+    emailList: { type: [String], default: [],index:true },
     isDelete: { type: Boolean, default: false },
   },
   { timestamps: true }
