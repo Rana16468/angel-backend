@@ -21,7 +21,7 @@ route.get("/find_by_specific_live_comment/:eventId", auth(USER_ROLE.host,USER_RO
 route.delete("/delete_live_commend/:id", auth(USER_ROLE.host, USER_ROLE.thrillseekers), ReactEventPostController.  deleteLiveCommend);
 //  eventShareCountPostSchema
 route.post("/event_share", auth(USER_ROLE.host,USER_ROLE.thrillseekers), validationRequest(reactEventPostValidation.eventShareCountPostSchema), ReactEventPostController.recordedShareCount)
-const eventSocialPost=route;
+
 
 
 route.post(
@@ -37,5 +37,5 @@ route.get(
   ReactEventPostController.findSpecificByLiveEmoji
 );
 
-
+const eventSocialPost=route;
 export default eventSocialPost;

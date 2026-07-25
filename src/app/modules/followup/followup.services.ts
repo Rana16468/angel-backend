@@ -386,41 +386,76 @@ const sendInvitasationNotificationIntoDb = async (
   invitationData: InvitationNotification
 ) => {
   try {
-    const { title, content, invitasationList, route, senderId, groupId } = invitationData;
+    const {
+      title,
+      content,
+      invitasationList,
+      route,
+      senderId,
+      groupId,
+    } = invitationData;
 
-      console.log({ title, content, invitasationList, route, senderId, groupId })
-  
-   
     for (const userId of invitasationList) {
-      const newNotification = new notifications({
+      // Check user & FCM token
+      const user = await users.findById(userId).select("fcm");
+
+      if (!user) {
+        console.log(`User not found: ${userId}`);
+        continue;
+      }
+
+      if (!user.fcm) {
+        console.log(`No FCM token found for user: ${userId}`);
+        continue;
+      }
+
+      // Notification payload
+      const notificationPayload: any = {
         userId,
         title,
         content,
         route,
-        senderId, 
-        groupId
-      });
+        senderId,
+      };
 
-      // Save notification to DB
-      const savedNotification = await newNotification.save();
+      // groupId is optional
+      if (groupId) {
+        notificationPayload.groupId = groupId;
+      }
+
+      // Save notification
+      const savedNotification = await notifications.create(
+        notificationPayload
+      );
 
       if (!savedNotification) {
-        console.error(`Failed to save notification for userId: ${userId}`);
-        continue; // Skip sending push notification if save failed
+        console.log(`Failed to save notification for ${userId}`);
+        continue;
       }
 
       // Send push notification
-      const pushResult = await NotificationServices.sendPushNotification(
-        userId.toString(),
-        { title, content }
-      );
+      try {
+        await NotificationServices.sendPushNotification(userId.toString(), {
+          title,
+          content,
+        });
 
-      if (!pushResult) {
-        console.error(`Failed to send push notification for userId: ${userId}`);
+        console.log(`✅ Notification sent to ${userId}`);
+      } catch (pushError) {
+        console.error(
+          `❌ Failed to send push notification to ${userId}`,
+          pushError
+        );
       }
     }
+
+    return {
+      success: true,
+      message: "Invitation notifications sent successfully.",
+    };
   } catch (error: any) {
     console.error("Error sending invitation notifications:", error);
+
     throw new AppError(
       status.SERVICE_UNAVAILABLE,
       "Server unavailable: sendInvitationNotificationIntoDb"
