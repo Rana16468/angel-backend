@@ -51,31 +51,27 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 300 * 1024 * 1024, // 250 MB in bytes
+    fileSize: 300 * 1024 * 1024, // 300 MB
   },
   fileFilter: (req, file, cb) => {
-   const allowedMimeTypes = [
-  "image/jpeg",        // .jpeg, .jpg
-  "image/png",         // .png
-  "image/gif",         // .gif
-  "image/webp",        // .webp
-  "image/bmp",         // .bmp
-  "image/tiff",        // .tif, .tiff
-  "image/svg+xml",     // .svg
-  "image/heic", 
-  "image/HEIC",       // .heic (iPhone photos)
-  "image/heif",        // .heif
-  "image/x-icon",      // .ico
-  "image/vnd.microsoft.icon", // .ico alternative
-];
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/bmp",
+      "image/tiff",
+      "image/svg+xml",
+      "image/heic",
+      "image/heif",
+      "image/x-icon",
+      "image/vnd.microsoft.icon",
+    ];
 
-
-    // Allow images/PDFs
     if (allowedMimeTypes.includes(file.mimetype)) {
       return cb(null, true);
     }
 
-    // Allow videos
     if (file.mimetype.startsWith("video")) {
       return cb(null, true);
     }
@@ -90,3 +86,5 @@ const upload = multer({
 });
 
 export default upload;
+
+

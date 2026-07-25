@@ -8,13 +8,44 @@ import auth from "../../middlewares/auth";
 import eventPostController from "./event_post.controller";
 import validationRequest from "../../middlewares/validationRequest";
 import eventPostValidation from "./event_post.validation";
+import multer from "multer";
 
 const route = express.Router();
 
 route.post(
   "/create_post_event",
   auth(USER_ROLE.host, USER_ROLE.thrillseekers),
-  upload.single("file"),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    upload.single("file")(req, res, (err: any) => {
+      if (err) {
+        if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
+          return next(
+            new AppError(
+              status.BAD_REQUEST,
+              "File size must not exceed 300 MB."
+            )
+          );
+        }
+
+        // Multer এর অন্যান্য Error
+        if (err instanceof multer.MulterError) {
+          return next(
+            new AppError(
+              status.BAD_REQUEST,
+              err.message
+            )
+          );
+        }
+
+        // Custom Error
+        return next(err);
+      }
+
+      next();
+    });
+  },
+
   (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.body.data && typeof req.body.data === "string") {
@@ -22,10 +53,12 @@ route.post(
       }
       next();
     } catch (error) {
-      next(new AppError(status.BAD_REQUEST, "Invalid JSON data", ""));
+      next(new AppError(status.BAD_REQUEST, "Invalid JSON data"));
     }
   },
+
   validationRequest(eventPostValidation.createEventPostSchema),
+
   eventPostController.createEventPost
 );
 

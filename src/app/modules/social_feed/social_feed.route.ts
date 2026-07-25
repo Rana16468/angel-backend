@@ -7,6 +7,7 @@ import status from 'http-status';
 import validationRequest from '../../middlewares/validationRequest';
 import SocialFeedValidation from './social_feed.validation';
 import SocialFeedController from './social_feed.controller';
+import multer from 'multer';
 
 
 
@@ -15,7 +16,35 @@ const route=express.Router();
 route.post(
   "/social_feed",
   auth(USER_ROLE.host, USER_ROLE.thrillseekers),
-  upload.single("file"),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    upload.single("file")(req, res, (err: any) => {
+      if (err) {
+        if (err instanceof multer.MulterError) {
+          if (err.code === "LIMIT_FILE_SIZE") {
+            return next(
+              new AppError(
+                status.BAD_REQUEST,
+                "File size must not exceed 300 MB."
+              )
+            );
+          }
+
+          return next(
+            new AppError(
+              status.BAD_REQUEST,
+              err.message
+            )
+          );
+        }
+
+        return next(err);
+      }
+
+      next();
+    });
+  },
+
   (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.body.data && typeof req.body.data === "string") {
@@ -26,7 +55,9 @@ route.post(
       next(new AppError(status.BAD_REQUEST, "Invalid JSON data", ""));
     }
   },
+
   validationRequest(SocialFeedValidation.SocialFeedSchema),
+
   SocialFeedController.createSocialFeed
 );
 
