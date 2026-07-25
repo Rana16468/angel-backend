@@ -133,8 +133,6 @@ cron.schedule('*/30 * * * *', async () => {
 app.use("/api/v1", router);
 app.use("/api/v1/monitor", monitorRouter); // ← metrics endpoint
 
-
-app.use("/api/v1", router);
 app.use(notFound);
 app.use(globalErrorHandelar);
 
