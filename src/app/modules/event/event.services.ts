@@ -330,58 +330,77 @@ const addEventType = (events: any[]) => {
 
 
 const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
+  const session = await mongoose.startSession();
+
   try {
+    session.startTransaction();
+
     const data = req.body as any;
     const file = req.file;
 
-    const existingEvent = await events.findById(id);
+    const existingEvent = await events.findById(id).session(session);
+
     if (!existingEvent) {
       throw new AppError(status.NOT_FOUND, "Event not found");
     }
 
     const updateData: Record<string, any> = {};
 
-  
-    if (data.event_title) updateData.event_title = data.event_title;
-    if (data.description) updateData.description = data.description;
-    if (data.date) updateData.date = data.date;
+    /**
+     * ----------------------------------------
+     * Basic Fields
+     * ----------------------------------------
+     */
 
-    // ⚡ ২. তারিখ ফিল্টার (YYYY-MM-DD ফরম্যাট নিশ্চিতকরণ)
+    if (data.event_title !== undefined)
+      updateData.event_title = data.event_title;
+
+    if (data.description !== undefined)
+      updateData.description = data.description;
+
+    if (data.date !== undefined)
+      updateData.date = data.date;
+
+    /**
+     * ----------------------------------------
+     * Date
+     * ----------------------------------------
+     */
+
     let rawDate = data.date || existingEvent.date;
 
     if (typeof rawDate === "string" && rawDate.includes("T")) {
       rawDate = rawDate.split("T")[0];
-    } else if (rawDate instanceof Date) {
+    }
+
+    if (rawDate instanceof Date) {
       rawDate = rawDate.toISOString().split("T")[0];
     }
 
-    const targetDate = rawDate;
+    /**
+     * ----------------------------------------
+     * Time Validation
+     * ----------------------------------------
+     */
 
-   
     let finalStartUTC = existingEvent.starting_time;
     let finalEndUTC = existingEvent.ending_time;
 
-    
-     if (!data?.date || !data?.starting_time || !data?.ending_time) {
-      throw new AppError(
-        status.BAD_REQUEST,
-        "Date, starting_time, and ending_time are required"
-      );
-    }
-
-  
     if (data.starting_time && data.ending_time) {
-      const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
-        rawDate,
-        data.starting_time,
-        data.ending_time
-      );
+      const { startDateTime, endDateTime } =
+        validateAndGetEventUTCInterval(
+          rawDate,
+          data.starting_time,
+          data.ending_time
+        );
+
+      finalStartUTC = startDateTime;
+      finalEndUTC = endDateTime;
 
       updateData.starting_time = startDateTime;
       updateData.ending_time = endDateTime;
     }
 
-    
     if (new Date(finalEndUTC) <= new Date(finalStartUTC)) {
       throw new AppError(
         status.BAD_REQUEST,
@@ -389,81 +408,199 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       );
     }
 
-   
+    /**
+     * ----------------------------------------
+     * Audience Settings
+     * ----------------------------------------
+     */
+
     if (data.audience_settings) {
       const aud = data.audience_settings;
 
-      if (aud.event_location?.lat)
-        updateData["audience_settings.event_location.lat"] = aud.event_location.lat;
-      if (aud.event_location?.lon)
-        updateData["audience_settings.event_location.lon"] = aud.event_location.lon;
+      if (aud.event_location?.lat !== undefined)
+        updateData["audience_settings.event_location.lat"] =
+          aud.event_location.lat;
+
+      if (aud.event_location?.lon !== undefined)
+        updateData["audience_settings.event_location.lon"] =
+          aud.event_location.lon;
 
       if (aud.point_system) {
         if (aud.point_system.people !== undefined)
-          updateData["audience_settings.point_system.people"] = aud.point_system.people;
+          updateData["audience_settings.point_system.people"] =
+            aud.point_system.people;
+
         if (aud.point_system.point !== undefined)
-          updateData["audience_settings.point_system.point"] = aud.point_system.point;
+          updateData["audience_settings.point_system.point"] =
+            aud.point_system.point;
       }
 
       if (aud.notification) {
         if (aud.notification.livechat !== undefined)
-          updateData["audience_settings.notification.livechat"] = aud.notification.livechat;
+          updateData["audience_settings.notification.livechat"] =
+            aud.notification.livechat;
+
         if (aud.notification.push_notifications !== undefined)
-          updateData["audience_settings.notification.push_notifications"] =
-            aud.notification.push_notifications;
+          updateData[
+            "audience_settings.notification.push_notifications"
+          ] = aud.notification.push_notifications;
+
         if (aud.notification.event_countdown !== undefined)
-          updateData["audience_settings.notification.event_countdown"] =
-            aud.notification.event_countdown;
+          updateData[
+            "audience_settings.notification.event_countdown"
+          ] = aud.notification.event_countdown;
       }
 
       if (aud.social_media) {
         if (aud.social_media.content !== undefined)
-          updateData["audience_settings.social_media.content"] = aud.social_media.content;
+          updateData["audience_settings.social_media.content"] =
+            aud.social_media.content;
+
         if (aud.social_media.gallery !== undefined)
-          updateData["audience_settings.social_media.gallery"] = aud.social_media.gallery;
+          updateData["audience_settings.social_media.gallery"] =
+            aud.social_media.gallery;
+
         if (aud.social_media.sharing !== undefined)
-          updateData["audience_settings.social_media.sharing"] = aud.social_media.sharing;
+          updateData["audience_settings.social_media.sharing"] =
+            aud.social_media.sharing;
+
         if (aud.social_media.streaming !== undefined)
-          updateData["audience_settings.social_media.streaming"] = aud.social_media.streaming;
+          updateData["audience_settings.social_media.streaming"] =
+            aud.social_media.streaming;
       }
 
-      if (aud.ticket_price) updateData["audience_settings.ticket_price"] = aud.ticket_price;
-      if (aud.price !== undefined) updateData["audience_settings.price"] = aud.price;
+      if (aud.ticket_price !== undefined)
+        updateData["audience_settings.ticket_price"] =
+          aud.ticket_price;
+
+      if (aud.price !== undefined)
+        updateData["audience_settings.price"] = aud.price;
     }
 
-   
+    /**
+     * ----------------------------------------
+     * Image Update
+     * ----------------------------------------
+     */
+
     if (file?.path) {
       if (existingEvent.photo) {
         try {
-          const resolvedPath = path.resolve(existingEvent.photo);
-          if (fs.existsSync(resolvedPath)) {
-            fs.unlinkSync(resolvedPath);
+          const oldPath = path.resolve(existingEvent.photo);
+
+          if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
           }
-        } catch (fileErr) {
-          console.error("Failed to delete old event image:", fileErr);
+        } catch (err) {
+          console.error("Old image delete failed:", err);
         }
       }
+
       updateData.photo = file.path.replace(/\\/g, "/");
     }
 
-    const updatedEvent = await events
-      .findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
-      .lean();
+    /**
+     * ----------------------------------------
+     * Update Event
+     * ----------------------------------------
+     */
 
-      await chatrooms.findByIdAndUpdate(id, {chatRoomName:updateData.event_title},  { new: true, runValidators: true })
-       await joingroups.findByIdAndUpdate(id, {groupName:updateData.event_title}, { new: true, runValidators: true })
+    const updatedEvent = await events.findByIdAndUpdate(
+      id,
+      {
+        $set: updateData,
+      },
+      {
+        new: true,
+        runValidators: true,
+        session,
+      }
+    );
+
     if (!updatedEvent) {
-      throw new AppError(status.SERVICE_UNAVAILABLE, "Server issues in event update");
+      throw new AppError(
+        status.INTERNAL_SERVER_ERROR,
+        "Failed to update event"
+      );
     }
 
-    return { status: true, message: "Successfully updated" };
+  
+
+    if (updateData.event_title) {
+      const chatRoom = await chatrooms.findOneAndUpdate(
+        {
+          eventId: updatedEvent._id,
+        },
+        {
+          $set: {
+            chatRoomName: updateData.event_title,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+          session,
+        }
+      );
+
+      if (!chatRoom) {
+        throw new AppError(
+          status.NOT_FOUND,
+          "Chat room not found"
+        );
+      }
+
+      const joinGroup = await joingroups.findOneAndUpdate(
+        {
+          eventId: updatedEvent._id,
+        },
+        {
+          $set: {
+            groupName: updateData.event_title,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+          session,
+        }
+      );
+
+      if (!joinGroup) {
+        throw new AppError(
+          status.NOT_FOUND,
+          "Join group not found"
+        );
+      }
+    }
+
+    await session.commitTransaction();
+
+    return {
+      success: true,
+      message: "Event updated successfully",
+      data: updatedEvent,
+    };
   } catch (error: any) {
-    if (error instanceof AppError) throw error;
+    await session.abortTransaction();
+
+    if (error instanceof AppError) {
+      throw error;
+    }
+
+    if (error.code === 11000) {
+      throw new AppError(
+        status.CONFLICT,
+        "Chat room or group name already exists."
+      );
+    }
 
     throw new AppError(
-      status.SERVICE_UNAVAILABLE,
-      error.message || "Failed to update event in db"
+      status.INTERNAL_SERVER_ERROR,
+      error.message || "Failed to update event"
     );
+  } finally {
+    session.endSession();
   }
 };
 

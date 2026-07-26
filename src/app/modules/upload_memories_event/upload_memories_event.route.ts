@@ -27,7 +27,9 @@ route.post(
   validationRequest(uploadMemoriesEventValidation.uploadMemoriesEventZodSchema),
 UploadMemoriesEventController.UploadMemoriesEvent
 );
-route.get("/find_my_upload_memories_event", auth(USER_ROLE.host,USER_ROLE.thrillseekers), UploadMemoriesEventController.findMyUploadMemoriesEvent);
+route.get("/find_my_upload_memories_event/:favoriteeventId", 
+  auth(USER_ROLE.host,USER_ROLE.thrillseekers),
+   UploadMemoriesEventController.findMyUploadMemoriesEvent);
 
 route.post("/love_eemoji_memories_event_count", auth(USER_ROLE.host,USER_ROLE.thrillseekers), UploadMemoriesEventController.LoveEemojiMemoriesEventCount)
 

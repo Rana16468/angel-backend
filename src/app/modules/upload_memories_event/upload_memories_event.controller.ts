@@ -21,7 +21,7 @@ const  UploadMemoriesEvent:RequestHandler=catchAsync(async(req , res)=>{
 
 const findMyUploadMemoriesEvent:RequestHandler=catchAsync(async(req , res)=>{
 
-      const result =await UploadMemoriesEventServices.findMyUploadMemoriesEventIntoDb(req.query, req.user.id);
+      const result =await UploadMemoriesEventServices.findMyUploadMemoriesEventIntoDb(req.query, req.user.id, req.params.favoriteeventId);
              sendResponse(res, {
         success: true,
         statusCode: status.OK,

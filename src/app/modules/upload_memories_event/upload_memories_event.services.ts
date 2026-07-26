@@ -57,39 +57,53 @@ const UploadMemoriesEventIntoDb = async (
 
 const findMyUploadMemoriesEventIntoDb = async (
   query: Record<string, unknown>,
-  userId: string
+  userId: string,
+  favoriteeventId: string
 ) => {
   try {
     const page = Number(query.page) || 1;
     const limit = Number(query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // ✅ Build match filter dynamically
-    const matchStage: any = {
+    const matchStage: Record<string, any> = {
       userId: new mongoose.Types.ObjectId(userId),
+      favoriteeventId: new mongoose.Types.ObjectId(favoriteeventId),
       isDelete: false,
     };
 
+    // Filter by content type
     if (query?.contentType && query.contentType !== "all") {
       matchStage.contentType = query.contentType;
     }
 
-    // ✅ Aggregation pipeline
     const pipeline = [
-      { $match: matchStage },
+      {
+        $match: matchStage,
+      },
+
       {
         $lookup: {
           from: "loveemojimemoriesevents",
-          let: { memoryId: "$_id" },
+          let: {
+            memoryId: "$_id",
+          },
           pipeline: [
             {
               $match: {
                 $expr: {
                   $and: [
-                    { $eq: ["$uploadMemorieSeventId", "$$memoryId"] },
-                    { $eq: ["$userId", new mongoose.Types.ObjectId(userId)] },
-                    { $eq: ["$isLove", true] },
-                    { $ne: ["$isDelete", true] },
+                    {
+                      $eq: ["$uploadMemorieSeventId", "$$memoryId"],
+                    },
+                    {
+                      $eq: ["$userId", new mongoose.Types.ObjectId(userId)],
+                    },
+                    {
+                      $eq: ["$isLove", true],
+                    },
+                    {
+                      $ne: ["$isDelete", true],
+                    },
                   ],
                 },
               },
@@ -101,28 +115,44 @@ const findMyUploadMemoriesEventIntoDb = async (
 
       {
         $addFields: {
-          isLove: { $gt: [{ $size: "$loveStatus" }, 0] },
+          isLove: {
+            $gt: [{ $size: "$loveStatus" }, 0],
+          },
         },
       },
 
       {
         $project: {
-          favoriteeventId: 0,
           userId: 0,
           isDelete: 0,
           loveStatus: 0,
           updatedAt: 0,
+          favoriteeventId: 0, 
         },
       },
-      { $sort: { createdAt: -1 } },
 
-      { $skip: skip },
-      { $limit: limit },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+
+      {
+        $skip: skip,
+      },
+
+      {
+        $limit: limit,
+      },
     ];
 
-    const my_memories_event = await uploadmemorieseventsnts.aggregate(pipeline as any);
+    const my_memories_event = await uploadmemorieseventsnts.aggregate(
+      pipeline as any
+    );
 
-    const totalDocuments = await uploadmemorieseventsnts.countDocuments(matchStage);
+    const totalDocuments = await uploadmemorieseventsnts.countDocuments(
+      matchStage
+    );
 
     const meta = {
       page,
@@ -131,9 +161,13 @@ const findMyUploadMemoriesEventIntoDb = async (
       totalPages: Math.ceil(totalDocuments / limit),
     };
 
-    return { meta, my_memories_event };
-  } catch (error: any) {
+    return {
+      meta,
+      my_memories_event,
+    };
+  } catch (error) {
     console.error(error);
+
     throw new AppError(
       status.INTERNAL_SERVER_ERROR,
       "Issues in finding My Upload Memories Event, server unavailable"
