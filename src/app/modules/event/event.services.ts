@@ -334,7 +334,6 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
     const data = req.body as any;
     const file = req.file;
 
-    // ১. বিদ্যমান ইভেন্ট চেক করা
     const existingEvent = await events.findById(id);
     if (!existingEvent) {
       throw new AppError(status.NOT_FOUND, "Event not found");
@@ -342,7 +341,7 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
 
     const updateData: Record<string, any> = {};
 
-    // বেসিক ফিল্ডস
+  
     if (data.event_title) updateData.event_title = data.event_title;
     if (data.description) updateData.description = data.description;
     if (data.date) updateData.date = data.date;
@@ -370,8 +369,7 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       );
     }
 
-    
-// ⚡ ৩. টাইম হ্যান্ডলিং ও সঠিক UTC রূপান্তর
+  
     if (data.starting_time && data.ending_time) {
       const { startDateTime, endDateTime } = validateAndGetEventUTCInterval(
         rawDate,
@@ -379,12 +377,11 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
         data.ending_time
       );
 
-      // ⚠️ আগে আপনি updateData অবজেক্টে এগুলো সেট করেননি! এখন ঠিক করা হলো:
       updateData.starting_time = startDateTime;
       updateData.ending_time = endDateTime;
     }
 
-    // ⚡ ৪. স্টার্ট এবং এন্ড টাইমের পারস্পরিক সময় ভ্যালিডেশন Check
+    
     if (new Date(finalEndUTC) <= new Date(finalStartUTC)) {
       throw new AppError(
         status.BAD_REQUEST,
@@ -392,7 +389,7 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       );
     }
 
-    // ৫. Audience settings nested fields
+   
     if (data.audience_settings) {
       const aud = data.audience_settings;
 
@@ -434,7 +431,7 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       if (aud.price !== undefined) updateData["audience_settings.price"] = aud.price;
     }
 
-    // ⚡ ৬. নতুন ফটো আপডেট ও পুরোনো ফটো ফাইল নিরাপদভাবে ডিলিট
+   
     if (file?.path) {
       if (existingEvent.photo) {
         try {
@@ -449,11 +446,12 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
       updateData.photo = file.path.replace(/\\/g, "/");
     }
 
-    // ৭. ডাটাবেজে আপডেট
     const updatedEvent = await events
       .findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
       .lean();
 
+      await chatrooms.findByIdAndUpdate(id, {chatRoomName:updateData.event_title},  { new: true, runValidators: true })
+       await joingroups.findByIdAndUpdate(id, {groupName:updateData.event_title}, { new: true, runValidators: true })
     if (!updatedEvent) {
       throw new AppError(status.SERVICE_UNAVAILABLE, "Server issues in event update");
     }

@@ -61,13 +61,14 @@ export const validateAndGetEventUTCInterval = (
   offsetStr: string = "+06:00"
 ) => {
   const startUTC = toUTCISODateTime(dateStr, startTimeStr, offsetStr);
-  const endUTC = toUTCISODateTime(dateStr, endTimeStr, offsetStr);
+  let endUTC = toUTCISODateTime(dateStr, endTimeStr, offsetStr);
 
   const startDate = new Date(startUTC);
   const endDate = new Date(endUTC);
 
-  if (endDate <= startDate) {
-    throw new AppError(status.BAD_REQUEST, "Ending time must be after starting time");
+   if (endDate <= startDate) {
+    endDate.setUTCDate(endDate.getUTCDate() + 1);
+    endUTC = endDate.toISOString();
   }
 
   return {
