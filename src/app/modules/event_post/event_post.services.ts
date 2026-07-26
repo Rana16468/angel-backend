@@ -390,6 +390,7 @@ const findMyAllEventPostListIntoDb = async (
     const matchStage = {
       $match: {
         isDelete: false,
+        eventId: { $exists: false },
         $or: [
           { userId: userObjectId },
           { tag_people: userObjectId },
@@ -519,6 +520,7 @@ const findMyAllEventPostListIntoDb = async (
           react: 1,
           comment: 1,
           share: 1,
+          eventId:1,
 
           // 🔥 REPLACED: IDs → FULL USER INFO
           tag_people: "$taggedUsers",

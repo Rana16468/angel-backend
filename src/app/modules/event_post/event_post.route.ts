@@ -95,7 +95,9 @@ route.post(
 
 route.get("/find_by_all_social_feed_event", auth(USER_ROLE.host,USER_ROLE.thrillseekers),  eventPostController.findByEventSocialFeedFiltering);
 route.get("/find_by_specific_event_post/:id", eventPostController.findBySpecificEventPost);
-route.get("/find_my_all_event_post_list/:userId", auth(USER_ROLE.host,USER_ROLE.thrillseekers), eventPostController.findMyAllEventPostList);
+route.get("/find_my_all_event_post_list/:userId",
+   auth(USER_ROLE.host,USER_ROLE.thrillseekers),
+    eventPostController.findMyAllEventPostList);
 route.get("/completed_live_event_post_media_file/:eventId",auth(USER_ROLE.host,USER_ROLE.thrillseekers),eventPostController.completedEventPostMediaFile)
 route.patch("/update_event_post/:id", auth(USER_ROLE.host,USER_ROLE.thrillseekers), validationRequest(eventPostValidation.updateEventPostSchema), eventPostController.updateEventPost)
 const eventPosts = route;

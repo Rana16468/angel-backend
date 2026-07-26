@@ -53,7 +53,8 @@ const MyEventTypeWaysFiltering: RequestHandler = catchAsync(
 
 const findBySpecificEvent: RequestHandler = catchAsync(async (req, res) => {
   const result = await EventServices.findBySpecificEventIntoDb(
-    req?.params?.id
+    req?.params?.id,
+    req.query
   
   );
   sendResponse(res, {

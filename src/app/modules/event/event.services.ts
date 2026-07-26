@@ -607,7 +607,7 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
 
 
 
-const findBySpecificEventIntoDb = async (id: string) => {
+const findBySpecificEventIntoDb = async (id: string,query: Record<string, unknown> ) => {
   try {
     const result = await joingroups
       .findOne({ eventId: id }, { _id: 1 })
@@ -1216,71 +1216,91 @@ const findByUpcommingAndPastEventFilteringIntoDb = async (
 
 // find by my location waise nearest event 
 
-const findByNearestEventIntoDb = async (query: Record<string, any>) => {
+const findByNearestEventIntoDb = async (
+  query: Record<string, any>
+) => {
   try {
     const now = new Date();
-
-    const { page: pageStr, limit: limitStr } = query;
 
     // -----------------------------
     // Pagination
     // -----------------------------
-    const page = Number(pageStr) || 1;
-    const limit = Number(limitStr) || 10;
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
     const skip = (page - 1) * limit;
 
     // -----------------------------
-    // Base Query (NO pagination here)
+    // Query Builder
     // -----------------------------
-    const baseQuery = new QueryBuilder<any>(
-      events.find({}).select(
-        "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.ticket_price audience_settings.event_location.lat audience_settings.event_location.lon"
-      ),
-      {}
+    const queryBuilder = new QueryBuilder(
+      events
+        .find({})
+        .select(
+          `
+          photo
+          event_title
+          event_category
+          event_features
+          createdAt
+          date
+          starting_time
+          ending_time
+          audience_settings
+          `
+        ),
+      query // ✅ Pass query instead of {}
     )
       .search([
+        "event_title",
         "event_category",
+        "event_features",
+        "audience_settings.visibility",
+        "audience_settings.age",
         "audience_settings.ticket_price",
         "date",
-        "audience_settings.age",
-        "audience_settings.visibility",
-        "event_features",
-        "event_title",
       ])
       .filter()
       .sort()
-      .fields(); // ❗ paginate removed
+      .fields();
 
-    const eventsResult = await baseQuery.modelQuery;
+    const eventsResult = await queryBuilder.modelQuery;
 
     // -----------------------------
-    // Filter LIVE + UPCOMING
+    // Filter Live + Upcoming Events
     // -----------------------------
     const filteredEvents = eventsResult
-      .map((e: any) => {
-        const eventObj = e.toObject ? e.toObject() : e;
+      .map((event: any) => {
+        const eventObj = event.toObject();
 
         const start = new Date(eventObj.starting_time);
         const end = new Date(eventObj.ending_time);
 
         let type: "live" | "upcoming" | null = null;
 
-        if (now < start) type = "upcoming";
-        else if (now >= start && now <= end) type = "live";
+        if (now < start) {
+          type = "upcoming";
+        } else if (now >= start && now <= end) {
+          type = "live";
+        }
 
-        return type ? { ...eventObj, type } : null;
+        if (!type) return null;
+
+        return {
+          ...eventObj,
+          type,
+        };
       })
-      .filter((e) => e !== null);
+      .filter(Boolean);
 
     // -----------------------------
-    // Pagination AFTER filtering
+    // Pagination After Filtering
     // -----------------------------
     const paginatedEvents = filteredEvents.slice(skip, skip + limit);
 
     const meta = {
-      total: filteredEvents.length,
       page,
       limit,
+      total: filteredEvents.length,
       totalPage: Math.ceil(filteredEvents.length / limit),
     };
 
@@ -1289,11 +1309,11 @@ const findByNearestEventIntoDb = async (query: Record<string, any>) => {
       eventsList: paginatedEvents,
     };
   } catch (error: any) {
-    console.error("Error in findByNearestEventIntoDb:", error);
+    console.error(error);
 
     throw new AppError(
       status.SERVICE_UNAVAILABLE,
-      "issues finding the nearest event in DB",
+      "Issues finding nearest events",
       error.message
     );
   }
