@@ -11,7 +11,7 @@ const recordedPointSystem:RequestHandler=catchAsync(async(req , res)=>{
        sendResponse(res, {
     statusCode: status.OK,
     success: true,
-    message: 'Successfully Recorded',
+    message: 'Congratulations! You have successfully earned reward points.',
     data: result,
   });
 });

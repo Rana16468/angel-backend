@@ -235,108 +235,161 @@ const createConnectedAccountAndOnboardingLinkIntoDb = async (
   userData: JwtPayload,
 ) => {
   try {
+   
     const normalUser: any = await users.findOne(
       {
-        $and: [
-          { _id: userData.id },
-          { isDelete: false },
-          { isVerify: true },
-          { status: USER_ACCESSIBILITY.isProgress },
-        ],
+        _id: userData.id,
+        isDelete: false,
+        isVerify: true,
+        status: USER_ACCESSIBILITY.isProgress,
       },
-      { _id: 1, stripeAccountId: 1, email: 1 },
+      {
+        _id: 1,
+        stripeAccountId: 1,
+        email: 1,
+      },
     );
 
     if (!normalUser) {
       throw new AppError(
         status.NOT_FOUND,
-        'This user is restricted due to some issues',
-        '',
+        "User not found or restricted",
+        "",
       );
     }
 
-    if (normalUser?.stripeAccountId) {
-      const account = await stripe.accounts.retrieve(normalUser.stripeAccountId);
+   
+
+    if (normalUser.stripeAccountId) {
+      console.log(
+        "Retrieving Stripe Account:",
+        normalUser.stripeAccountId,
+      );
+
+      const account = await stripe.accounts.retrieve(
+        normalUser.stripeAccountId,
+      );
+
+     
+
       if (
-        account?.capabilities?.card_payments === 'inactive' &&
-        account?.capabilities?.transfers === 'inactive'
+        account.capabilities?.card_payments === "inactive" &&
+        account.capabilities?.transfers === "inactive"
       ) {
         await users.findOneAndUpdate(
           {
-            _id: userData?.id,
+            _id: userData.id,
+            isDelete: false,
             isVerify: true,
             status: USER_ACCESSIBILITY.isProgress,
-            isDelete: false,
           },
-          { $unset: { stripeAccountId: '' } },
-          { new: true },
+          {
+            $unset: {
+              stripeAccountId: "",
+            },
+          },
         );
 
-        return await createNewStripeAccountAndLink(normalUser?.email, userData?.id);
+        return await createNewStripeAccountAndLink(
+          normalUser.email,
+          userData.id,
+        );
       }
 
       return {
-
         card_payments: account.capabilities?.card_payments,
         transfers: account.capabilities?.transfers,
-
       };
     }
 
-    return await createNewStripeAccountAndLink(normalUser?.email, userData?.id);
+    return await createNewStripeAccountAndLink(
+      normalUser.email,
+      userData.id,
+    );
   } catch (error: any) {
+    console.error("\n========== STRIPE ERROR ==========");
+    console.error(error);
+
+    if (error.raw) {
+      console.error("Stripe Raw Error:", error.raw);
+    }
+
+   
     throw new AppError(
-      status.SERVICE_UNAVAILABLE,
-      'createConnectedAccountAndOnboardingLinkIntoDb server unavailable',
-      '',
+      error.statusCode || status.INTERNAL_SERVER_ERROR,
+      error.message || "Something went wrong.",
+      error.stack || "",
     );
   }
 };
-const createNewStripeAccountAndLink = async (email: string, userId: string) => {
+
+const createNewStripeAccountAndLink = async (
+  email: string,
+  userId: string,
+) => {
+  
   const account = await stripe.accounts.create({
-    type: 'express',
+    type: "express",
     email,
-    country: 'US',
+    country: "US",
+    business_type: "individual",
     capabilities: {
-      card_payments: { requested: true },
-      transfers: { requested: true },
+      card_payments: {
+        requested: true,
+      },
+      transfers: {
+        requested: true,
+      },
     },
-    business_type: 'individual',
     settings: {
-      payouts: { schedule: { interval: 'manual' } },
+      payouts: {
+        schedule: {
+          interval: "manual",
+        },
+      },
     },
   });
 
+ 
   const onboardingLink = await stripe.accountLinks.create({
     account: account.id,
     refresh_url: `${config.stripe_payment_gateway.onboarding_refresh_url}?accountId=${account.id}`,
     return_url: config.stripe_payment_gateway.onboarding_return_url,
-    type: 'account_onboarding',
+    type: "account_onboarding",
   });
+
+  
 
   const updatedUser = await users.findOneAndUpdate(
     {
       _id: userId,
+      isDelete: false,
       isVerify: true,
       status: USER_ACCESSIBILITY.isProgress,
-      isDelete: false,
     },
-    { $set: { stripeAccountId: account.id } },
-    { new: true, upsert: true },
+    {
+      $set: {
+        stripeAccountId: account.id,
+      },
+    },
+    {
+      new: true,
+    },
   );
 
   if (!updatedUser) {
     throw new AppError(
-      status.NOT_EXTENDED,
-      'Issue storing Stripe account ID in DB',
-      '',
+      status.BAD_REQUEST,
+      "Failed to save Stripe Account ID",
+      "",
     );
   }
 
-  // ✅ Always return URL for new accounts
-  return { onboardingUrl: onboardingLink?.url };
+  return {
+    onboardingUrl: onboardingLink.url,
+    stripeAccountId: account.id,
+  };
 };
-
 
 
 
@@ -645,6 +698,8 @@ const handleWebhookIntoDb = async (event: Stripe.Event) => {
     switch (event.type) {
       case 'payment_intent.succeeded': {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log("paymentIntent",paymentIntent );
+        
 
         if (!paymentIntent?.id) {
           throw new AppError(
@@ -971,6 +1026,7 @@ const isLiveEventPaymentExistIntoDb = async (userId: string, eventId: string) =>
         {
           eventId: new Types.ObjectId(eventId),
           userId: new Types.ObjectId(userId),
+          payment_status: payment_status.paid
         },
         {
           payment_status: 1,
@@ -979,11 +1035,8 @@ const isLiveEventPaymentExistIntoDb = async (userId: string, eventId: string) =>
       )
       .lean();
 
-      
-
+     
     if (!result) {
-
-
        return {
         status:false,
         payment_status: payment_status.unpaid
