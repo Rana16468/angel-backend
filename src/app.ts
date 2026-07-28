@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import path from "path";
-import config from "./app/config";
+
 import router from "./app/routes";
 import notFound from "./app/middlewares/notFound";
 import globalErrorHandelar from "./app/middlewares/globalErrorHandler";

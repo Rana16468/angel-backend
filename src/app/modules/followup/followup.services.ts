@@ -537,35 +537,58 @@ const isBlockFollowerAndFollowingIntoDb = async (
   userId: string,
   blockedUserId: string
 ) => {
+  const updatePipeline = [
+    {
+      $set: {
+        isBlock: {
+          $not: "$isBlock",
+        },
+      },
+    },
+  ];
+
   const result = await followups.findOneAndUpdate(
     {
       userId,
       followupId: blockedUserId,
-      isDelete: false,
+     
     },
-    [
-      {
-        $set: {
-          isBlock: { $not: "$isBlock" },
-        },
-      },
-    ],
-    { new: true }
+    updatePipeline,
+    {
+      new: true,
+    }
   );
 
   if (!result) {
     throw new AppError(status.NOT_FOUND, "Follow relation not found");
   }
 
+  await followups.findOneAndUpdate(
+    {
+      userId: blockedUserId,
+      followupId: userId,
+      
+    },
+    updatePipeline,
+    {
+      new: true,
+    }
+  );
+  const updatedRelation = await followups.findOne({
+    userId,
+    followupId: blockedUserId,
+    isDelete: false,
+  });
+
   return {
     status: true,
-    message: result.isBlock
+    message: updatedRelation?.isBlock
       ? "Successfully blocked user"
       : "Successfully unblocked user",
     data: {
       userId,
       blockedUserId,
-      isBlock: result.isBlock,
+      isBlock: updatedRelation?.isBlock ?? false,
     },
   };
 };
