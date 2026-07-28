@@ -41,10 +41,22 @@ const deleteSocialFeed:RequestHandler=catchAsync(async(req , res)=>{
   });
 })
 
+const findBySpecificSocialFeed:RequestHandler=catchAsync(async(req , res)=>{
+
+   const result=await SocialFeedServices.findBySpecificSocialFeedIntoDb(req.params.id);
+   sendResponse(res, {
+    success: true,
+    statusCode: status.OK,
+    message: "Successfully find My  Specific Social Post",
+    data: result,
+  });
+})
+
 const SocialFeedController={
     createSocialFeed,
     findByFollowWaieSocialFeed,
-     deleteSocialFeed
+     deleteSocialFeed,
+     findBySpecificSocialFeed
 };
 
 export default SocialFeedController;

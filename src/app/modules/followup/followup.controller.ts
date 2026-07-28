@@ -144,6 +144,21 @@ sendResponse(res, {
 
 })
 
+const findByEventSocialFeedById: RequestHandler = catchAsync(
+  async (req, res) => {
+    const result = await FollowUpServices.findByEventSocialFeedByIdIntoDb(
+      req.params.id
+    );
+
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Successfully retrieved post",
+      data: result,
+    });
+  }
+);
+
 
 
 
@@ -160,7 +175,8 @@ sendResponse(res, {
      deleteFollowerList,
      isBlockFollowerAndFollowing,
      findBySpecificFollowingUser,
-     getBlockedUsers
+     getBlockedUsers,
+     findByEventSocialFeedById
   
  };
 

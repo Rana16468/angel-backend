@@ -65,7 +65,10 @@ route.post(
 
 route.get("/find_my_follow_waie_social_feed", auth(USER_ROLE.host,USER_ROLE.thrillseekers), SocialFeedController?.findByFollowWaieSocialFeed);
 route.delete("/delete_social_feed/:id",auth(USER_ROLE.host,USER_ROLE.thrillseekers),SocialFeedController.deleteSocialFeed );
-
+route.get("/find_by_specific_social_feed/:id",
+  auth(USER_ROLE.host,USER_ROLE.thrillseekers),
+  SocialFeedController.findBySpecificSocialFeed
+)
 
 
   const SocialFeedRoute=route;

@@ -30,6 +30,12 @@ router.get(
   FollowUpController.getBlockedUsers
 );
 
+router.get(
+  "/social-feed/:id",
+  auth(USER_ROLE.thrillseekers, USER_ROLE.host),
+  FollowUpController.findByEventSocialFeedById
+);
+
 
 const FollowupRouters= router;
 export  default FollowupRouters;

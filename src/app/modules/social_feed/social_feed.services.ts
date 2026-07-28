@@ -306,13 +306,86 @@ const deleteSocialFeedIntoDb=async(userId: string, id:string)=>{
 }
 
 
+const findBySpecificSocialFeedIntoDb = async (id: string) => {
+  try {
+    const socialFeedId = new mongoose.Types.ObjectId(id);
+
+    const result = await socialfeeds.aggregate([
+      {
+        $match: {
+          _id: socialFeedId,
+          isDelete: false,
+        },
+      },
+
+      // User Information
+      {
+        $lookup: {
+          from: "users",
+          let: { userId: "$userId" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$_id", "$$userId"],
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 1,
+                name: 1,
+                photo: 1,
+                email: 1,
+                username: 1,
+              },
+            },
+          ],
+          as: "userInfo",
+        },
+      },
+
+      {
+        $addFields: {
+          userId: {
+            $arrayElemAt: ["$userInfo", 0],
+          },
+        },
+      },
+
+      {
+        $project: {
+          userInfo: 0,
+        },
+      },
+    ]);
+
+    if (!result.length) {
+      throw new AppError(status.NOT_FOUND, "Social feed not found");
+    }
+
+    return {
+      success: true,
+      message: "Successfully retrieved social feed",
+      data: result[0],
+    };
+  } catch (error) {
+    throw new AppError(
+      status.SERVICE_UNAVAILABLE,
+      "Issues retrieving social feed"
+    );
+  }
+};
+
+
 
 
 
 const SocialFeedServices={
     createSocialFeedIntoDb,
     findByFollowWaieSocialFeedIntoDb,
-     deleteSocialFeedIntoDb
+     deleteSocialFeedIntoDb,
+     findBySpecificSocialFeedIntoDb
 };
 
 // added more information   my flower  ways data filtering in my  social feed  (user section)
