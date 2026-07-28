@@ -255,6 +255,71 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
   };
 };
 
+const findByEventSocialFeedByIdIntoDb = async (postId: string) => {
+   try{
+
+     const result = await eventposts.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(postId),
+        isDelete: false,
+        eventId: { $exists: false },
+      },
+    },
+
+    // User Info
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+              photo: 1,
+              subname: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$user",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+
+    // Tagged People
+    {
+      $lookup: {
+        from: "users",
+        localField: "tag_people",
+        foreignField: "_id",
+        as: "tag_people",
+        pipeline: [
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+            },
+          },
+        ],
+      },
+    },
+  ]);
+
+  return result.length ? result[0] : null;
+
+   }
+   catch(error){
+     throw new AppError(status.SERVICE_UNAVAILABLE,'')
+   }
+};
+
 
 
 
@@ -647,7 +712,8 @@ const FollowUpServices = {
    deleteFollowerListIntoDb,
    isBlockFollowerAndFollowingIntoDb,
    findBySpecificFollowingUserIntoDb,
-   getBlockedUsersIntoDb
+   getBlockedUsersIntoDb,
+   findByEventSocialFeedByIdIntoDb
 
 };
 
