@@ -84,13 +84,13 @@ import AppError from "../errors/AppError";
     for (const story of expiredStories) {
       const storyId = story._id;
 
-      // ✅ 1. Delete file
-      if (story.content) {
+      // ✅ 1. Delete file if stored locally
+      if (story.content && !story.content.startsWith("http://") && !story.content.startsWith("https://")) {
         const fullPath = path.resolve(story.content);
 
         if (fs.existsSync(fullPath)) {
           await fs.promises.unlink(fullPath); // async version ✅
-          console.log(`🗑️ Deleted file: ${fullPath}`);
+          console.log(`🗑️ Deleted local file: ${fullPath}`);
         }
       }
 
