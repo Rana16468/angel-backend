@@ -36,10 +36,10 @@ RUN mkdir -p src/public/temp
 
 # Set environment variable (can be overridden during docker run)
 ENV NODE_ENV=production
-ENV PORT=5000
+ENV PORT=5008
 
 # Expose the application port
-EXPOSE 5000
+EXPOSE 5008
 
 # Start the application
 CMD ["npm", "start"]
