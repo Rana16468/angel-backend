@@ -72,6 +72,38 @@ app.use(
   }),
 );
 
+// Deep Linking verification endpoints (.well-known)
+app.get('/.well-known/assetlinks.json', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json([
+    {
+      relation: ["delegate_permission/common.handle_all_urls"],
+      target: {
+        namespace: "android_app",
+        package_name: "co.thrillio.app",
+        sha256_cert_fingerprints: [
+          "10:ED:C9:F4:79:AB:05:43:D9:D2:C3:7E:11:AA:68:55:0C:BF:CF:DC:1D:93:33:DE:78:37:D5:CD:DE:28:EA:3A"
+        ]
+      }
+    }
+  ]);
+});
+
+app.get('/.well-known/apple-app-site-association', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json({
+    applinks: {
+      apps: [],
+      details: [
+        {
+          appID: "YOUR_APPLE_TEAM_ID.co.thrillio.app",
+          paths: ["*"]
+        }
+      ]
+    }
+  });
+});
+
 // delete expaire subscription auto delete
 
 app.get("/", (_req, res) => {
