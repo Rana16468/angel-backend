@@ -5,3 +5,9 @@ build/
 uploads/
 coverage/
 *.log
+
+# Ignore local temporary uploads and media
+src/public/temp/
+src/public/images/
+src/public/videos/
+src/public/pdf/
