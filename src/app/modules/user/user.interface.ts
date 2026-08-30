@@ -19,7 +19,10 @@ export type TUser = {
   dateOfBirth: string;
   email: string;
   phoneNumber?: string;
-  verificationCode: number;
+  verificationCode?: number;
+  otpRequestCount?: number;
+  lastOtpSentAt?: Date;
+  otpExpiresAt?: Date;
   isVerify: boolean;
   status: 'isProgress' | 'Blocked';
   photo?: string;

@@ -86,9 +86,20 @@ const googleAuth: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const resendOtp: RequestHandler = catchAsync(async (req, res) => {
+  const result = await UserServices.resendOtpIntoDb(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: result.message || "Successfully Sent OTP",
+    data: result,
+  });
+});
+
 const UserController = {
   createUser,
   userVarification,
+  resendOtp,
   chnagePassword,
   forgotPassword,
   verificationForgotUser,
@@ -97,3 +108,4 @@ const UserController = {
 };
 
 export default UserController;
+

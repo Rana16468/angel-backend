@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 import config from "../config";
+import path from "path";
+import fs from "fs";
 
 const sendEmail = async (to: string, html: string, subject?: string) => {
   const transporter = nodemailer.createTransport({
@@ -12,13 +14,26 @@ const sendEmail = async (to: string, html: string, subject?: string) => {
     },
   });
 
+  const logoPath = path.join(process.cwd(), "public", "images", "logo.png");
+  const attachments = fs.existsSync(logoPath)
+    ? [
+        {
+          filename: "logo.png",
+          path: logoPath,
+          cid: "appLogo",
+        },
+      ]
+    : [];
+
   await transporter.sendMail({
-    from: config.send_email.nodemailer_email,
+    from: `"Angel Event Platform" <${config.send_email.nodemailer_email}>`,
     to,
-    subject: subject ? subject : "User Varification Email",
-    text: "Varify Email with in 10 mins",
+    subject: subject ? subject : "User Verification Email",
+    text: "Verify your email within 10 minutes",
     html,
+    attachments,
   });
 };
 
 export default sendEmail;
+

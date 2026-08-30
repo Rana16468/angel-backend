@@ -21,6 +21,13 @@ router.patch(
   UserController.userVarification
 );
 
+router.post(
+  "/resend_otp",
+  validationRequest(UserValidationSchema.resendOtpZodSchema),
+  UserController.resendOtp
+);
+
+
 router.patch(
   "/change_password",
   auth(

@@ -1,0 +1,5897 @@
+{
+  "info": {
+    "_postman_id": "49683d12-a506-4522-a0e6-74a1b4b6a88d",
+    "name": "angel-backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47848416",
+    "_collection_link": "https://go.postman.co/collection/47848416-49683d12-a506-4522-a0e6-74a1b4b6a88d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login_user",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {
+              "user-agent": true,
+              "accept-encoding": true,
+              "connection": true,
+              "accept": true
+            }
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// user\r\n// {\r\n//     \"email\": \"info.sohelranaa@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n\r\n// User\r\n// {\r\n//     \"email\": \"riyajuddeeneusoufoffice@gmail.com\",\r\n//     \"password\": \"123456789\"\r\n//     // \"fcm\":\"\"\r\n// }\r\n\r\n\r\n// {\r\n//     \"email\": \"dabatoshpaul48@gmail.com\",\r\n//     \"password\": \"Tast123#\"\r\n// }\r\n\r\n//host\r\n// {\r\n//     \"email\": \"moshiurrahmanmehedi210@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n\r\n//host\r\n{\r\n    \"email\": \"eusoufriyaj@gmail.com\",\r\n    \"password\": \"123456\"\r\n}\r\n//     \"fcm\": \"cEghrSHmaHFH141KtB85C9:APA91bHK32qcrfw0LbPXUsuWV98AJdw2dpZ2u7lUiXvqglcNI41qC6eYzlw1p62RNCSgs2xD_9X2GWAvO23HtGQQTVIjrPNM8VfeqQGfid2D_aLQ9g6dApg\"\r\n// }\r\n\r\n// admin\r\n// {\r\n//     \"email\": \"amsr215019@gmail.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/login_user",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login_user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh-token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzllMDhmYjJlMjc5NTJmNDE5MmMzZSIsInJvbGUiOiJob3N0IiwiZW1haWwiOiJtb3NoaXVycmFobWFubWVoZWRpMjEwQGdtYWlsLmNvbSIsImlhdCI6MTc2MjEwMDg2MywiZXhwIjoxNzYyOTY0ODYzfQ.FuHAmIZijVwz6dKqIhzvJDTWFayEe88FcTzJqg99asM\"\r\n   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/refresh-token",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "refresh-token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "myprofile",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NjY4MjY2NzUsImV4cCI6MTc2NzY5MDY3NX0.CD2UcNLkPtCHE6x9iDBWdKYan5lXs4nCc8EwbQzpyu4",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/myprofile",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "myprofile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_my_profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{ \"name\":\"Riyaj Uddin\",\"dateOfBirth\":\"12-09-2000\", \"phoneNumber\": \"01722305054\"}",
+                  "type": "text",
+                  "uuid": "6873926f-d9d3-48c8-ba81-674eddc7de12"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "2f7e9463-f81d-42b8-84f2-ab48f3ba3997",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-11 032720.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/update_my_profile",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "update_my_profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_admin_all_users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/find_by_admin_all_users",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "find_by_admin_all_users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjY2OWJjMjRkMzIxNjdkMWZhZGQ4ZCIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJtcm1haGRpMDAwMDFAZ21haWwuY29tIiwiaWF0IjoxNzYxNDE4MDQ0LCJleHAiOjE3NjIyODIwNDR9.YhqDGZrYcQ5eVF5Jh5HtlocWVtSjCkQ-F_7JdPAhYCQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\r\n//     \"email\":\"info.sohelranaa@gmail.com\",\r\n//     \"password\":\"12345678\"\r\n// }\r\n\r\n// admin \r\n{\r\n    \"email\": \"amsr215019@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/delete_account/68fd27c6e5144525f9098233",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "delete_account",
+                "68fd27c6e5144525f9098233"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change_status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\":\"blocked\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/change_status/68b71e270256ddb0b89dd214",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "change_status",
+                "68b71e270256ddb0b89dd214"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "create_user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "//thrillseekers \r\n// {\r\n//      \"name\": \"A M Sohel Rana\",\r\n//     \"password\": \"12345678\", \r\n//     \"email\": \"info.sohelranaa@gmail.com\",\r\n//     \"phoneNumber\": \"1234567890\",\r\n//     \"dateOfBirth\": \"1995-08-20\",\r\n//     \"fcm\":\"cEghrSHmaHFH141KtB85C9:APA91bHK32qcrfw0LbPXUsuWV98AJdw2dpZ2u7lUiXvqglcNI41qC6eYzlw1p62RNCSgs2xD_9X2GWAvO23HtGQQTVIjrPNM8VfeqQGfid2D_aLQ9g6dApg\"\r\n// }\r\n// admin account \r\n\r\n{\r\n    \"name\": \"Parves Mosarof\",\r\n    \"password\": \"abc123\", \r\n    \"email\": \"yawiyi7778@bialode.com\",\r\n    \"phoneNumber\": \"01828170792\",\r\n    \"dateOfBirth\": \"1999-09-20\",\r\n    \"fcm\":\"cEghrSHmaHFH141KtB85C9:APA91bHK32qcrfw0LbPXUsuWV98AJdw2dpZ2u7lUiXvqglcNI41qC6eYzlw1p62RNCSgs2xD_9X2GWAvO23HtGQQTVIjrPNM8VfeqQGfid2D_aLQ9g6dApg\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/create_user",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "create_user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "user_verification",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"verificationCode\": 602265\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/user_verification",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "user_verification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change_password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"newpassword\": \"12345678\",\r\n    \"oldpassword\": \"1234567\" \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/change_password",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "change_password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "forgot_password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"email\": \"moshiurrahmanmehedi210@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/forgot_password",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "forgot_password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verification_forgot_user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"verificationCode\":900761\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/verification_forgot_user",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "verification_forgot_user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reset_password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"userId\": \"68b71e270256ddb0b89dd214\",\r\n   \"password\":\"12345678\"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/reset_password",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "reset_password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "google_auth",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n     \"name\": \"king\", \r\n    \"email\": \"king@gmail.com\",\r\n    \"photo\":\"https://images.pexels.com/photos/30889575/pexels-photo-30889575/free-photo-of-elegant-orange-sports-car-on-scenic-road.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1\",\r\n     \"role\":\"host\",\r\n     \"fcm\":\"cEghrSHmaHFH141KtB85C9:APA91bHK32qcrfw0LbPXUsuWV98AJdw2dpZ2u7lUiXvqglcNI41qC6eYzlw1p62RNCSgs2xD_9X2GWAvO23HtGQQTVIjrPNM8VfeqQGfid2D_aLQ9g6dApg\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/user/google_auth",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "google_auth"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "item": [
+        {
+          "name": "AboutUs",
+          "item": [
+            {
+              "name": "about",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n    \"aboutUs\":\" THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG \"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/about",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "about"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "find_by_about_us",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/find_by_about_us",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "find_by_about_us"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Privacy Policys",
+          "item": [
+            {
+              "name": "privacy_policys",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n    \"PrivacyPolicy\":\"<h2>Privacy Policy</h2><p>We value your privacy. This policy explains how we collect and use your information.</p><h3>Information We Collect</h3><p>We may collect your name, email, location (if allowed), and app usage data.</p><h3>Use of Information</h3><p>Your data helps us improve services, send updates, and ensure security.</p><h3>Sharing</h3><p>We do not sell your data. It may be shared only with trusted providers or if required by law.</p><h3>Protection</h3><p>We use security measures to protect your information but cannot guarantee 100% safety online.</p><h3>Your Rights</h3><p>You may access, update, or delete your info anytime via settings.</p><h3>Contact</h3><p>Questions? Email us at <a href='mailto:support@example.com'>support@example.com</a>.</p>\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/privacy_policys",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "privacy_policys"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "find_by_privacy_policyss",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/find_by_privacy_policys",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "find_by_privacy_policys"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Terms Conditions",
+          "item": [
+            {
+              "name": "terms_conditions",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n    \"TermsConditions\":\" THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG \"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/terms_conditions",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "terms_conditions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "find_by_trams_and_condition",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/setting/find_by_terms_conditions",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "setting",
+                    "find_by_terms_conditions"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "event",
+      "item": [
+        {
+          "name": "create_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"hostId\": \"65a7f2e9c1d3b1f123456789\",\n  \"event_title\": \"Tech Conference 2026\",\n  \"description\": \"the quick brown fox jumps over the lazy dog\",\n  \"date\": \"2026-01-31\",\n  \"starting_time\": \"4:14 AM\",\n  \"ending_time\": \"11:00 AM\",\n  \"venue_facilities\": [\n    {\n      \"type\": \"washroom\",\n      \"available\": true,\n      \"description\": \"Free parking available for attendees.\"\n    },\n    {\n      \"type\": \"handwashstation\",\n      \"available\": true,\n      \"description\": \"High-speed internet available throughout the venue.\"\n    }\n  ],\n  \"event_category\": \"Parties\",\n  \"event_features\": \"Pet Friendly\",\n  \"audience_settings\": {\n    \"age\": \"21+\",\n    \"max_capacity\": 500,\n    \"visibility\": \"Private\",\n    \"email\": \"invites@example.com\",\n    \"social_media\": {\n      \"content\": true,\n      \"gallery\": false,\n      \"sharing\": true,\n      \"streaming\": true\n    },\n    \"notification\": {\n      \"livechat\": true,\n      \"push_notifications\": true,\n      \"event_countdown\": true\n    },\n    \"point_system\": {\n      \"people\": 5,\n      \"point\": 100\n    },\n    \"ticket_price\": \"paid\",\n    \"price\": 20,\n    \"event_location\": {\n      \"lat\": \"23.8103\",\n      \"lon\": \"90.4125\"\n    }\n  }\n}\n",
+                  "type": "text",
+                  "uuid": "182e176e-1638-4881-8162-809031e16057"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "4bbf6a17-e7e9-4304-857d-945d12c103bd",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2026-01-28 021012.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/create_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "create_event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_event_list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_my_event_list?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_my_event_list"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_event_list Copy",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_my_event_list?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_my_event_list"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my_event_dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/my_event_dashboard",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "my_event_dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my_event_type_ways_filtering",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/my_event_type_ways_filtering?searchTerm=live&page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "my_event_type_ways_filtering"
+              ],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "live"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_event",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "data",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"event_title\": \"the ewhrqwhrhqwjh\",\n  \"description\": \"A global conference discussing the latest in AI and Web3.\",\n  \"date\": \"2026-01-29\",\n  \"starting_time\": \"10:00  AM\",\n  \"ending_time\": \"04:00 PM\",\n  \"audience_settings\": {\n    \"event_location\": {\n      \"lat\": \"23.8103\",\n      \"lon\": \"90.4126\"\n    }\n  }\n}\n",
+                  "type": "text",
+                  "uuid": "56b2ccc1-9938-4e0c-8c59-14085035fbad"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "f1a8feb2-1e38-48c5-9605-916c886de622",
+                  "src": "/C:/Users/infos/Downloads/image (13).png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/update_event/69793fd769032d7a163b607c",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "update_event",
+                "69793fd769032d7a163b607c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "specifc_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_specific_event/68c9efca2b903379c54f9ade",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_specific_event",
+                "68c9efca2b903379c54f9ade"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_event",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "data",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"event_title\": \"Tech Conference\",\n  \"description\": \"A global conference discussing the latest in AI and Web3.\",\n  \"date\": \"2025-09-20\",\n  \"starting_time\": \"10:00 am\",\n  \"ending_time\": \"04:00 pm\",\n  \"audience_settings\": {\n    \"event_location\": {\n      \"lat\": \"23.8103\",\n      \"lon\": \"90.4126\"\n    }\n  }\n}\n",
+                  "type": "text",
+                  "uuid": "56b2ccc1-9938-4e0c-8c59-14085035fbad"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "f1a8feb2-1e38-48c5-9605-916c886de622",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-08-11 053151.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/delete_event/69794c56e151e6b4fc6b1d01",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "delete_event",
+                "69794c56e151e6b4fc6b1d01"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_nearest_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_my_nearest_event?lat=24.89&lon=90.4075657",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_my_nearest_event"
+              ],
+              "query": [
+                {
+                  "key": "lat",
+                  "value": "24.89"
+                },
+                {
+                  "key": "lon",
+                  "value": "90.4075657"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"68b776743532adff9c17211a\", \"content\": \"Updated post content about the Tech Conference1.\",\n    \"caption\": \"Excited for the 2025 Tech Conference!\",\n    \"tag_people\": [\n      \"68b8b2367f01c4dbda934712\",\n      \"68b76fca5941636d3fb7dfd1\"\n    ]}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-08-11 045257.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_specific_event/6a0a14afabae1174c094172e",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_specific_event",
+                "6a0a14afabae1174c094172e"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_nearest_event",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NzE1MjU0NzYsImV4cCI6MTc3MjM4OTQ3Nn0.UQgvr4hFXcaiQa69BO2i7Hf3sKFbdAbGrc9YuKKSBPY",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_nearest_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_nearest_event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "host_all_event_avg_rating",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/host_all_event_avg_rating",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "host_all_event_avg_rating"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "agora_access_token",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/agora_access_token/69823a7e31a308148f9fb733",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "agora_access_token",
+                "69823a7e31a308148f9fb733"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "event_post",
+      "item": [
+        {
+          "name": "create_post_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"697fce1c0652e6892807f587\"\n}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/image (53).png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/create_post_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "create_post_event"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "tag_user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"68b776743532adff9c17211a\", \"content\": \"Updated post content about the Tech Conference.\",\n    \"caption\": \"Excited for the 2025 Tech Conference!\",\n    \"tag_people\": [\n      \"64f7b9d5a4b8c3e5f0d1a456\",\n      \"64f7b9d5a4b8c3e5f0d1a789\"\n    ]}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214650.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/tag_user?searchTerm=Sohel Host",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "tag_user"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "Sohel Host"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_specific_event_post_list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "disabledSystemHeaders": {
+              "connection": true
+            }
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"68b776743532adff9c17211a\", \"content\": \"Updated post content about the Tech Conference1.\",\n    \"caption\": \"Excited for the 2025 Tech Conference!\",\n    \"tag_people\": [\n      \"68b8b2367f01c4dbda934712\",\n      \"68b76fca5941636d3fb7dfd1\"\n    ]}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-08-11 045257.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/find_by_all_specific_event_post_list/697fc99786a59c8594e4c061?page=1&limit=2",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "find_by_all_specific_event_post_list",
+                "697fc99786a59c8594e4c061"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_event_post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"68b776743532adff9c17211a\", \"content\": \"Updated post content about the Tech Conference1.\",\n    \"caption\": \"Excited for the 2025 Tech Conference!\",\n    \"tag_people\": [\n      \"68b8b2367f01c4dbda934712\",\n      \"68b76fca5941636d3fb7dfd1\"\n    ]}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-08-11 045257.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/delete_event_post/68e6bb9dec13cfc31931d539",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "delete_event_post",
+                "68e6bb9dec13cfc31931d539"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_social_feed_post_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "a6836725-f74e-4878-8e8f-c62a5c92a06e",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-15 061143.png"
+                },
+                {
+                  "key": "data",
+                  "value": "{   \"caption\": \"the quicik brown fox jumps over the lazy dog\",\n    \"tag_people\": [\n      \"68b8b2367f01c4dbda934712\",\n      \"68b76fca5941636d3fb7dfd1\"\n    ]}",
+                  "type": "text",
+                  "uuid": "5b14996c-1e11-43d7-80e2-20567872e369"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/create_social_feed_post_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "create_social_feed_post_event"
+              ],
+              "query": [
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_social_feed_event",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "react_specific_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\"eventId\":\"68bca043cfbd979def35b32b\", \"content\": \"Updated post content about the Tech Conference1.\",\n    \"caption\": \"Excited for the 2025 Tech Conference!\",\n    \"tag_people\": [\n      \"68b8b2367f01c4dbda934712\",\n      \"68b76fca5941636d3fb7dfd1\"\n    ]}",
+                  "type": "text",
+                  "uuid": "ae5b8793-fdac-4cb7-b89d-c97a3f1b4ba5"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "610fca81-5553-4625-bf5f-7e7bb89ffdc4",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-15 061143.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/react_specific_event/68c853d390c916c99efa3d42",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "react_specific_event",
+                "68c853d390c916c99efa3d42"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "completed_live_event_post_media_file",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjcxZTI3MDI1NmRkYjBiODlkZDIxNCIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJpbmZvLnNvaGVscmFuYWFAZ21haWwuY29tIiwiaWF0IjoxNzYxMjU5NDgzLCJleHAiOjE3NjIxMjM0ODN9.q9ANgCAinkosynQ_qU0sDbtpJZY06Hhi5C2stxaI1ig",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/completed_live_event_post_media_file/68f7cec11d72ab10fc26171c",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "completed_live_event_post_media_file",
+                "68f7cec11d72ab10fc26171c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_event_post",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"caption\":\"the quick brown fox jumps over the lazy dog\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/update_event_post/68c853d390c916c99efa3d42",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "update_event_post",
+                "68c853d390c916c99efa3d42"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_all_event_post_list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NzgwOTYzOTYsImV4cCI6MTc3ODk2MDM5Nn0.XXrQ6Ko6Q9DQJGuwoXg7_B3ettP9mFt_lMaXMqYyCCM",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/find_my_all_event_post_list/68c0936b87afe71dc986f4ad?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "find_my_all_event_post_list",
+                "68c0936b87afe71dc986f4ad"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "JoinEventGroup",
+      "item": [
+        {
+          "name": "find_by_my_join_event_Group",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"event_title\": \"Tech Conference 2025\",\n    \"description\": \"A global conference discussing the latest in AI and Web3.\",\n    \"date\": \"2025-09-20\",\n    \"starting_time\": \"10:00\",\n    \"ending_time\": \"18:00\",\n    \"venue_facilities\": [\n      {\n        \"type\": \"washroom\",\n        \"available\": true,\n        \"description\": \"Free parking available for attendees.\"\n      },\n      {\n        \"type\": \"handwashstation\",\n        \"available\": true,\n        \"description\": \"High-speed internet available throughout the venue.\"\n      }\n    ],\n    \"event_category\": \"Parties\",\n    \"event_features\": \"Pet Friendly\",\n    \"audience_settings\": {\n      \"age\": \"21+\",\n      \"max_capacity\": 500,\n      \"visibility\": \"Public\",\n\n      \"social_media\": {\n        \"content\": true,\n        \"gallery\": false,\n        \"sharing\": true,\n        \"streaming\": true\n      },\n      \"notification\": {\n        \"livechat\": true,\n        \"push_notifications\": true,\n        \"event_countdown\": true\n      },\n      \"point_system\": {\n        \"people\": 5,\n        \"point\": 100\n      },\n      \"ticket_price\": \"free\",\n\n      \"event_location\": {\n        \"lat\": \"23.8103\",\n        \"lon\": \"90.4125\"\n      }\n    }\n  }",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214426.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_by_my_join_event_Group?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_by_my_join_event_Group"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_my_join_group",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"event_title\": \"Tech Conference 2025\",\n    \"description\": \"A global conference discussing the latest in AI and Web3.\",\n    \"date\": \"2025-09-20\",\n    \"starting_time\": \"10:00\",\n    \"ending_time\": \"18:00\",\n    \"venue_facilities\": [\n      {\n        \"type\": \"washroom\",\n        \"available\": true,\n        \"description\": \"Free parking available for attendees.\"\n      },\n      {\n        \"type\": \"handwashstation\",\n        \"available\": true,\n        \"description\": \"High-speed internet available throughout the venue.\"\n      }\n    ],\n    \"event_category\": \"Parties\",\n    \"event_features\": \"Pet Friendly\",\n    \"audience_settings\": {\n      \"age\": \"21+\",\n      \"max_capacity\": 500,\n      \"visibility\": \"Public\",\n\n      \"social_media\": {\n        \"content\": true,\n        \"gallery\": false,\n        \"sharing\": true,\n        \"streaming\": true\n      },\n      \"notification\": {\n        \"livechat\": true,\n        \"push_notifications\": true,\n        \"event_countdown\": true\n      },\n      \"point_system\": {\n        \"people\": 5,\n        \"point\": 100\n      },\n      \"ticket_price\": \"free\",\n\n      \"event_location\": {\n        \"lat\": \"23.8103\",\n        \"lon\": \"90.4125\"\n      }\n    }\n  }",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214426.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_by_specific_my_join_group/69acb42d4de1038920360f19",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_by_specific_my_join_group",
+                "69acb42d4de1038920360f19"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_my_join_group",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n    \"groupName\":\"Eleegon\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/update_my_join_group/68bca043cfbd979def35b334",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "update_my_join_group",
+                "68bca043cfbd979def35b334"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "join_event_group",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/join_event_group/69acb42d4de1038920360f19",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "join_event_group",
+                "69acb42d4de1038920360f19"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_join_event_group",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/delete_join_event_group/694991b1d360c719fcaee738",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "delete_join_event_group",
+                "694991b1d360c719fcaee738"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create_new_group",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n\"groupName\": \"Friends\",\n\"userList\": [\"691252de061b22c7b07d2376\",\n\"69370e1356b3f854b1a9e04b\"]\n}\n ",
+                  "type": "text",
+                  "uuid": "52ef6cc8-b432-4607-8864-658c743b5131"
+                },
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "uuid": "36181018-c453-4f16-8998-974ac59442d5",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2026-02-23 033404.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/create_new_group",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "create_new_group"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_additional_group",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/delete_additional_group/695ed3de972d4e0ab9e5da16",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "delete_additional_group",
+                "695ed3de972d4e0ab9e5da16"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "upload_group_photo",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/download (4).jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/upload_group_photo/696687088cf0a4002fe68265",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "upload_group_photo",
+                "696687088cf0a4002fe68265"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_join_event_group",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "",
+                "value": "",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_by_specific_join_event_group/69acb42d4de1038920360f19",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_by_specific_join_event_group",
+                "69acb42d4de1038920360f19"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "event_chatroom",
+      "item": [
+        {
+          "name": "find_by_my_event_chatroom",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"event_title\": \"Tech Conference 2025\",\n    \"description\": \"A global conference discussing the latest in AI and Web3.\",\n    \"date\": \"2025-09-20\",\n    \"starting_time\": \"10:00\",\n    \"ending_time\": \"18:00\",\n    \"venue_facilities\": [\n      {\n        \"type\": \"washroom\",\n        \"available\": true,\n        \"description\": \"Free parking available for attendees.\"\n      },\n      {\n        \"type\": \"handwashstation\",\n        \"available\": true,\n        \"description\": \"High-speed internet available throughout the venue.\"\n      }\n    ],\n    \"event_category\": \"Parties\",\n    \"event_features\": \"Pet Friendly\",\n    \"audience_settings\": {\n      \"age\": \"21+\",\n      \"max_capacity\": 500,\n      \"visibility\": \"Public\",\n\n      \"social_media\": {\n        \"content\": true,\n        \"gallery\": false,\n        \"sharing\": true,\n        \"streaming\": true\n      },\n      \"notification\": {\n        \"livechat\": true,\n        \"push_notifications\": true,\n        \"event_countdown\": true\n      },\n      \"point_system\": {\n        \"people\": 5,\n        \"point\": 100\n      },\n      \"ticket_price\": \"free\",\n\n      \"event_location\": {\n        \"lat\": \"23.8103\",\n        \"lon\": \"90.4125\"\n      }\n    }\n  }",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214426.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/find_by_my_event_chatroom?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "find_by_my_event_chatroom"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_my_chatRoom",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"event_title\": \"Tech Conference 2025\",\n    \"description\": \"A global conference discussing the latest in AI and Web3.\",\n    \"date\": \"2025-09-20\",\n    \"starting_time\": \"10:00\",\n    \"ending_time\": \"18:00\",\n    \"venue_facilities\": [\n      {\n        \"type\": \"washroom\",\n        \"available\": true,\n        \"description\": \"Free parking available for attendees.\"\n      },\n      {\n        \"type\": \"handwashstation\",\n        \"available\": true,\n        \"description\": \"High-speed internet available throughout the venue.\"\n      }\n    ],\n    \"event_category\": \"Parties\",\n    \"event_features\": \"Pet Friendly\",\n    \"audience_settings\": {\n      \"age\": \"21+\",\n      \"max_capacity\": 500,\n      \"visibility\": \"Public\",\n\n      \"social_media\": {\n        \"content\": true,\n        \"gallery\": false,\n        \"sharing\": true,\n        \"streaming\": true\n      },\n      \"notification\": {\n        \"livechat\": true,\n        \"push_notifications\": true,\n        \"event_countdown\": true\n      },\n      \"point_system\": {\n        \"people\": 5,\n        \"point\": 100\n      },\n      \"ticket_price\": \"free\",\n\n      \"event_location\": {\n        \"lat\": \"23.8103\",\n        \"lon\": \"90.4125\"\n      }\n    }\n  }",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214426.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/find_by_specific_my_chatRoom/694991b0d360c719fcaee72c",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "find_by_specific_my_chatRoom",
+                "694991b0d360c719fcaee72c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_my_join_group",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"chatRoomName\":\"eleegon kaspia\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/update_my_join_group/68bca043cfbd979def35b336",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "update_my_join_group",
+                "68bca043cfbd979def35b336"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "join_event_chatroom",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/join_event_chatroom/68bca043cfbd979def35b336",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "join_event_chatroom",
+                "68bca043cfbd979def35b336"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_event_chatroom",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/delete_event_chatroom/68c9f11f546ef79c050f897d",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "delete_event_chatroom",
+                "68c9f11f546ef79c050f897d"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "event_social_post",
+      "item": [
+        {
+          "name": "react_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventpostId\":\"68e436b38d1b8f529ace0e4a\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/react_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "react_event"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "event_comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n    \"eventpostId\":\"69921ccf5b59245790c3ce50\",\r\n    \"comment\":\"the quick brown fox\",\r\n    \"groupId\":\"68c853d390c916c99efa3d42\",\r\n    \"senderId\":\"68c853d390c916c99efa3d42\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/event_comment",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "event_comment"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_event_post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/delete_event_post/68d2d9e615135e252ed08340",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "delete_event_post",
+                "68d2d9e615135e252ed08340"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "event_share",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventpostId\":\"68e6bb9dec13cfc31931d539\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/event_share",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "event_share"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "event_post_reply",
+      "item": [
+        {
+          "name": "reply",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"commentEventPostId\":\"68e9438ae685e355afea31dc\",\r\n    \"comment\":\"hfdjgsd sdfhsdaf reply sohel 517522\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post_reply/reply",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post_reply",
+                "reply"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_event_comment_filtering",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"commentEventPostId\":\"68d2d9f1b3aea495e9e95da9\",\r\n    \"comment\":\"the pointer not exist this section\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post_reply/find_by_specific_event_comment_filtering/69028b68c9c5e939f07d6893",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post_reply",
+                "find_by_specific_event_comment_filtering",
+                "69028b68c9c5e939f07d6893"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_event_reply_filtering",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"commentEventPostId\":\"68d2d9f1b3aea495e9e95da9\",\r\n    \"comment\":\"the pointer not exist this section\"\r\n    \r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post_reply/find_by_specific_event_reply_filtering/68e4232a5c8c2aaab65bb34a",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post_reply",
+                "find_by_specific_event_reply_filtering",
+                "68e4232a5c8c2aaab65bb34a"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_reply",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post_reply/delete_reply/68ebe4d312a5e4592d8e1809",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post_reply",
+                "delete_reply",
+                "68ebe4d312a5e4592d8e1809"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "social_feed_route",
+      "item": [
+        {
+          "name": "social_feed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"message\": \"khsdfhasd sahkdgfhgasd new day\"\n}\n\n",
+                  "type": "text",
+                  "uuid": "0df35a94-fb01-4130-ba53-eac1fb4b5b4f"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "f36adf8e-45e3-4616-87d5-7b8d53224575",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2026-01-23 035317.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_route/social_feed",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_route",
+                "social_feed"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_follow_waie_social_feed",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"message\": \"Hi Here Is My Stores \"\n}\n\n",
+                  "type": "text",
+                  "uuid": "0df35a94-fb01-4130-ba53-eac1fb4b5b4f",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "f36adf8e-45e3-4616-87d5-7b8d53224575",
+                  "src": "/C:/Users/infos/Downloads/Generated Image September 30, 2025 - 2_05AM.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_route/find_my_follow_waie_social_feed?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_route",
+                "find_my_follow_waie_social_feed"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Nearest_Eevent_Filtering",
+      "item": [
+        {
+          "name": "nearest_location_ways_non_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/nearest_location_ways_non_event?latitude=37.4219983&longitude=-122.084&type=hire salon",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "nearest_location_ways_non_event"
+              ],
+              "query": [
+                {
+                  "key": "latitude",
+                  "value": "37.4219983"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-122.084"
+                },
+                {
+                  "key": "type",
+                  "value": "hire salon"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "favorite_event",
+      "item": [
+        {
+          "name": "recorded_my_favorite_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": \"ChIJY0yKLzq7j4ARNNLYPbJMgN8\",\r\n    \"name\": \"Reposado\",\r\n    \"address\": \"236 Hamilton Avenue, Palo Alto\",\r\n    \"rating\": 4.3,\r\n    \"totalRatings\": 2088,\r\n    \"location\": {\r\n        \"lat\": 37.4441583,\r\n        \"lng\": -122.1609667\r\n    },\r\n    \"openNow\": true,\r\n    \"types\": [\r\n        \"bar\",\r\n        \"restaurant\",\r\n        \"point_of_interest\",\r\n        \"food\",\r\n        \"establishment\"\r\n    ],\r\n    \"image\": \"https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=ATCDNfUIRBZR6CqzGIw_SfPWN8RI0IUnfCpkG-xNXmjgcIK_yZ27yaDleAvsBbW4vF9hwxH56WjH1-rEaMOyWMgsqFIXcASQmnv2lCAtES3F-KsWKqJzDfdnUd6U3yHH4pv5N21K3fvAlzqoWrWCWALiXH2T7R2s2gYOUacqVjeysexq-bFqu_zozCIKNEZ8mmU0BZNUuY7cfCh96V84gQ99C6UmmVJPVJlkdhP9KCVb1G5btqkkRsMd0LTrRZ_YfVnEBaAjfoEqDC7kGC8XHw9w8J341MK319uEbqgWVYwp-KmSWzWeUN86bkSC4oZRdCH9bIiMQWx7xIQ1qVgvHN1rrQJ8i9Q7NrX7DWkbDrAmrXHxI0bMlO6eyFq2gICGKpVxanWGCv-sB7M1gzltrUwjfQNdV7IgrkX29XS5uVBwAeoYH-pyW9j0gMLG2B6rcn0vgBZ-9zoazXR5n6mM2WH6l1kx21QWUd2ZSNiWkZ4jGzmlni08TVGw6CvChuF1aBVx2Jgrwu9FwUWwh_y2z2STtIkmG2X0bdJOJukSV6E8JL9f8dZ7Udw8hxKDjICrviJ8j_9RzjoeHaCgDxNoTwn-zbx2h7UM0go4P4i7ZQPFoqsVv-kFIRAnqQVN5KubarxQNKuNCw&key=AIzaSyBuSZJklSc1j0D4kqhkJcmyArcZbWujbXQ\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/favorite_event/recorded_my_favorite_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorite_event",
+                "recorded_my_favorite_event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_my_favorite_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Fazlul Haque\",\r\n    \"address\": \"RC66+4XQ, Mothura, sheikh para Sujanagar pabna, ঢাকা\",\r\n    \"rating\": 0,\r\n    \"totalRatings\": 0,\r\n    \"location\": {\r\n        \"lat\": 23.8103308,\r\n        \"lng\": 90.4124933\r\n    },\r\n    \"placeId\": \"ChIJJcV6ck3HVTcRGS8k-1VyvqU\",\r\n    \"openNow\": null,\r\n    \"types\": [\r\n        \"bar\",\r\n        \"point_of_interest\",\r\n        \"establishment\"\r\n    ],\r\n    \"image\": null\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/favorite_event/find_by_all_my_favorite_event?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorite_event",
+                "find_by_all_my_favorite_event"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_my_favorite_event",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/favorite_event/delete_my_favorite_event/68d817912be7ed5711da7ef5",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorite_event",
+                "delete_my_favorite_event",
+                "68d817912be7ed5711da7ef5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_specific_my_favorite_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Fazlul Haque\",\r\n    \"address\": \"RC66+4XQ, Mothura, sheikh para Sujanagar pabna, ঢাকা\",\r\n    \"rating\": 0,\r\n    \"totalRatings\": 0,\r\n    \"location\": {\r\n        \"lat\": 23.8103308,\r\n        \"lng\": 90.4124933\r\n    },\r\n    \"placeId\": \"ChIJJcV6ck3HVTcRGS8k-1VyvqU\",\r\n    \"openNow\": null,\r\n    \"types\": [\r\n        \"bar\",\r\n        \"point_of_interest\",\r\n        \"establishment\"\r\n    ],\r\n    \"image\": null\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/favorite_event/find_by_specific_my_favorite_event/68d817912be7ed5711da7ef5",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "favorite_event",
+                "find_by_specific_my_favorite_event",
+                "68d817912be7ed5711da7ef5"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "memories_event",
+      "item": [
+        {
+          "name": "memories_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "39ac8bc2-35d4-467f-b89d-e1fac0c1c88d",
+                  "src": "/C:/Users/infos/OneDrive/Pictures/Screenshots/Screenshot (1).png"
+                },
+                {
+                  "key": "data",
+                  "value": "{\n    \"favoriteeventId\": \"68d817912be7ed5711da7ef5\",\n    \"content\": \"Had an amazing time at the event!\",\n    \"contentType\": \"video\",\n    \"description\": \"This photo was taken during the main performance.\"\n \n  \n}\n",
+                  "type": "text",
+                  "uuid": "5aaa1a39-f23f-4ac4-b432-a72aeb18fd4f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/memories_event/memories_post_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "memories_event",
+                "memories_post_event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_upload_memories_event",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Fazlul Haque\",\r\n    \"address\": \"RC66+4XQ, Mothura, sheikh para Sujanagar pabna, ঢাকা\",\r\n    \"rating\": 0,\r\n    \"totalRatings\": 0,\r\n    \"location\": {\r\n        \"lat\": 23.8103308,\r\n        \"lng\": 90.4124933\r\n    },\r\n    \"placeId\": \"ChIJJcV6ck3HVTcRGS8k-1VyvqU\",\r\n    \"openNow\": null,\r\n    \"types\": [\r\n        \"bar\",\r\n        \"point_of_interest\",\r\n        \"establishment\"\r\n    ],\r\n    \"image\": null\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/memories_event/find_my_upload_memories_event?contentType=photo",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "memories_event",
+                "find_my_upload_memories_event"
+              ],
+              "query": [
+                {
+                  "key": "contentType",
+                  "value": "photo"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "love_eemoji_memories_event_count",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"uploadMemorieSeventId\":\"68edab1ce99d07c56e32f710\"\r\n  \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/memories_event/love_eemoji_memories_event_count",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "memories_event",
+                "love_eemoji_memories_event_count"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "reports",
+      "item": [
+        {
+          "name": "report_recording",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "7a9a0c8a-a574-4aa1-a3b7-fe0f97ca5342",
+                  "src": "/C:/Users/infos/OneDrive/Pictures/Screenshots/Screenshot 2025-05-16 040044.png"
+                },
+                {
+                  "key": "data",
+                  "value": " {\n    \"category\": \"Traffic\",\n    \"description\": \"Heavy traffic jam near the main highway.\",\n    \"location\": \"Dhaka, Bangladesh\"\n  }",
+                  "type": "text",
+                  "uuid": "0bcaa0db-c01b-4b4c-955f-8c261cb70db9"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/reports/report_recording",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "report_recording"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_report",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/reports/delete_report/68d869d1d557b8d8c4bbceef",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "delete_report",
+                "68d869d1d557b8d8c4bbceef"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "report_like",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reportId\":\"68d869cdd557b8d8c4bbceeb\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/reports/report_like",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "reports",
+                "report_like"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "followup",
+      "item": [
+        {
+          "name": "recorded_followup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"eventpostId\":\"68f2b99a6b798c146f228cd2\",\r\n    \"followupId\":\"68c0936b87afe71dc986f4ad\"\r\n   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/recorded_followup",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "recorded_followup"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_my_event_social_feed",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventpostId\":\"68d98a7de5736e89b3987fbe\",\r\n    \"eventId\":\"68c74468f65d8cfd94cff090\"\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/find_by_my_event_social_feed?page=1&limit=20",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "find_by_my_event_social_feed"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_followed_list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/find_my_followed_list",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "find_my_followed_list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_following_and_followed_list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/find_my_following_and_followed_list/68c0936b87afe71dc986f4ad",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "find_my_following_and_followed_list",
+                "68c0936b87afe71dc986f4ad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_all_event_post_list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_post/find_my_all_event_post_list/69094f6f55487f9df29480d2?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_post",
+                "find_my_all_event_post_list",
+                "69094f6f55487f9df29480d2"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send_invitasation_notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Meeting Reminder\",\r\n    \"content\": \"Don’t forget the client meeting tomorrow.\",\r\n    \"invitasationList\": [\r\n        \"68dc34d40809941ba052c9ff\",\r\n        \"68c9e08fb2e27952f4192c3e\"\r\n    ],\r\n    \"senderId\": \"68c0936b87afe71dc986f4ad\",\r\n    \"groupId\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/send_invitasation_notification",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "send_invitasation_notification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_following_list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/find_my_following_list",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "find_my_following_list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_follower_list",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/delete_follower_list/690ba84e432ae05424cb7d27",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "delete_follower_list",
+                "690ba84e432ae05424cb7d27"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "user_block",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"blockedUserId\":\"68c9e08fb2e27952f4192c3e\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/user_block",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "user_block"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "user_block list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/blocked-users",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "blocked-users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "is_book_user",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/followup/is_book_user",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "followup",
+                "is_book_user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_social_feed",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventpostId\":\"68d98a7de5736e89b3987fbe\",\r\n    \"eventId\":\"68c74468f65d8cfd94cff090\"\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_route/delete_social_feed/699108a15066020815d602f6",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_route",
+                "delete_social_feed",
+                "699108a15066020815d602f6"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "user_group_and_chatromm",
+      "item": [
+        {
+          "name": "find_by_user_join_event_Group",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"event_title\": \"Tech Conference 2025\",\n    \"description\": \"A global conference discussing the latest in AI and Web3.\",\n    \"date\": \"2025-09-20\",\n    \"starting_time\": \"10:00\",\n    \"ending_time\": \"18:00\",\n    \"venue_facilities\": [\n      {\n        \"type\": \"washroom\",\n        \"available\": true,\n        \"description\": \"Free parking available for attendees.\"\n      },\n      {\n        \"type\": \"handwashstation\",\n        \"available\": true,\n        \"description\": \"High-speed internet available throughout the venue.\"\n      }\n    ],\n    \"event_category\": \"Parties\",\n    \"event_features\": \"Pet Friendly\",\n    \"audience_settings\": {\n      \"age\": \"21+\",\n      \"max_capacity\": 500,\n      \"visibility\": \"Public\",\n\n      \"social_media\": {\n        \"content\": true,\n        \"gallery\": false,\n        \"sharing\": true,\n        \"streaming\": true\n      },\n      \"notification\": {\n        \"livechat\": true,\n        \"push_notifications\": true,\n        \"event_countdown\": true\n      },\n      \"point_system\": {\n        \"people\": 5,\n        \"point\": 100\n      },\n      \"ticket_price\": \"free\",\n\n      \"event_location\": {\n        \"lat\": \"23.8103\",\n        \"lon\": \"90.4125\"\n      }\n    }\n  }",
+                  "type": "text",
+                  "uuid": "3898ed8e-c330-49ae-aec4-3246a4065ba0"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "16170064-3c41-49f0-a444-d19228b103ae",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-09-01 214426.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_by_all_event_group",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_by_all_event_group"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_event_chat_room",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/find_by_event_chat_room?page=2&limit=5",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "find_by_event_chat_room"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_live_event_filtering",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_all_live_event_filtering?page=1&limit=10&searchTerm=live&eventDate=08-03-2026",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_all_live_event_filtering"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "live"
+                },
+                {
+                  "key": "eventDate",
+                  "value": "08-03-2026"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_upcomming_and_past_event",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3ODA0NDQzMTcsImV4cCI6MTc4MTMwODMxN30._BYXGHPKXa-xZnHMSPJXZDN8qwxLvERjIOCtfPoo-48",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_all_upcomming_and_past_event?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_all_upcomming_and_past_event"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "live_event_comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\":\"68d5cbd46429d7ffa1741004\",\r\n    \"comments\":\" live event \"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/live_event_comment",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "live_event_comment"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "live_event_emoji",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\":\"68e0560be9a09bfb75cd4540\",\r\n    \"emoji\":\"🔥 \"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/live_event_emoji",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "live_event_emoji"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "live_event_emoji",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\":\"68e0560be9a09bfb75cd4540\",\r\n    \"emoji\":\"🔥 \"\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/find_by_specific_live_emoji/68e0560be9a09bfb75cd4540",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "find_by_specific_live_emoji",
+                "68e0560be9a09bfb75cd4540"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "findSpecificByLiveEvent",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/find_by_specific_live_comment/68daf7e6bd41e2c1bb33b48d",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "find_by_specific_live_comment",
+                "68daf7e6bd41e2c1bb33b48d"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteLiveCommend",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_social_post/delete_live_commend/68e5511f0bcc15e02a3e3e8c",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_social_post",
+                "delete_live_commend",
+                "68e5511f0bcc15e02a3e3e8c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_join_group",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "description": "68bdbe309f87e26372c0cf1f",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_my_join_group?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_my_join_group"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my_event_chatroom",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Proxy-Authorization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/my_event_chatroom?page=1&limit=1",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "my_event_chatroom"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payment",
+      "item": [
+        {
+          "name": "payment_onboarding",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 100.00,\r\n  \"currency\": \"USD\",\r\n  \"itemName\": \"Node.js Complete Course\",\r\n  \"itemDescription\": \"Node.js Complete Course with Express and MongoDB\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/payment_onboarding",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "payment_onboarding"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create-checkout-session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"price\": 10,\r\n    \"eventId\": \"68bca043cfbd979def35b32b\",\r\n    \"ticketCount\": 1,\r\n    \"description\": \"the subscription buy the sohel rana \"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/create-checkout-session",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "create-checkout-session"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "payment-onboarding",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NjA5ODIzNjEsImV4cCI6MTc2MTg0NjM2MX0.UhytqVKY7Op4vUtpCqLaIRQE4nPEwlh3k-tY1XJLmuA",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\":\"blocked\"\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/create-onboarding-link",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "create-onboarding-link"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_payment_history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/find_my_payment_history",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "find_my_payment_history"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "completed_event_past_list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/completed_event_past_list?page=1&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "completed_event_past_list"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "is_live_event_payment_exist",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/payment/is_live_event_payment_exist/694991b1d360c719fcaee73c",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payment",
+                "is_live_event_payment_exist",
+                "694991b1d360c719fcaee73c"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Conversation",
+      "item": [
+        {
+          "name": "get-chat-list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// thrillseekers                                                                                                                                                                \r\n  {\r\n    \"email\":\"info.sohelranaa@gmail.com\",\r\n    \"password\":\"215019\"\r\n}\r\n\r\n// admin \r\n// {\r\n//     \"email\": \"amsr215019@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n// host \r\n// {\r\n//     \"email\":\"sakeg36735@ishense.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"tidoh87712@skateru.com\",\r\n//      \"password\": \"12345678\"\r\n// }\r\n\r\n// {\r\n//     \"email\":\"eusoufriyaj@gmail.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"riyajuddeeneusoufoffice@gmail.com\",\r\n//     \"password\":\"12345678\"\r\n// }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/conversation/get-chat-list",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversation",
+                "get-chat-list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "group_message_list",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// thrillseekers                                                                                                                                                                \r\n  {\r\n    \"email\":\"info.sohelranaa@gmail.com\",\r\n    \"password\":\"215019\"\r\n}\r\n\r\n// admin \r\n// {\r\n//     \"email\": \"amsr215019@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n// host \r\n// {\r\n//     \"email\":\"sakeg36735@ishense.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"tidoh87712@skateru.com\",\r\n//      \"password\": \"12345678\"\r\n// }\r\n\r\n// {\r\n//     \"email\":\"eusoufriyaj@gmail.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"riyajuddeeneusoufoffice@gmail.com\",\r\n//     \"password\":\"12345678\"\r\n// }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/conversation/specific_event_wise_conversation/68daf7e5bd41e2c1bb33b47d",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversation",
+                "specific_event_wise_conversation",
+                "68daf7e5bd41e2c1bb33b47d"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get_single_conversation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/conversation/get_single_conversation",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversation",
+                "get_single_conversation"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "group_message_conversation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get_group_conversation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjcxZTI3MDI1NmRkYjBiODlkZDIxNCIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJpbmZvLnNvaGVscmFuYWFAZ21haWwuY29tIiwiaWF0IjoxNzYwOTk0NTIxLCJleHAiOjE3NjE4NTg1MjF9.Ph3YIO3cw8XF68XCSU6wsKEb3GZppyIHd4_sXlO4wgc",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://10.10.20.13:3056/api/v1/conversation/get_group_conversation/68f00708ec3820cae715b7df",
+              "protocol": "http",
+              "host": [
+                "10",
+                "10",
+                "20",
+                "13"
+              ],
+              "port": "3056",
+              "path": [
+                "api",
+                "v1",
+                "conversation",
+                "get_group_conversation",
+                "68f00708ec3820cae715b7df"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "admin-dashboard",
+      "item": [
+        {
+          "name": "dashboard_count",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/dashboard_count",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "dashboard_count"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "user_graph",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/auth/user_graph?year=2025",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "user_graph"
+              ],
+              "query": [
+                {
+                  "key": "year",
+                  "value": "2025"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "user_graph",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/auth/user_graph?year=2025",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "user_graph"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "2025"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "497"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1f1-dMl9lu8NKRtjNjruPq1EjQXEet4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 19 Oct 2025 00:10:39 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Successfully  Find User Growth\",\n    \"data\": {\n        \"monthlyStats\": [\n            {\n                \"year\": 2025,\n                \"month\": 1,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 2,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 3,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 4,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 5,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 6,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 7,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 8,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 9,\n                \"count\": 13\n            },\n            {\n                \"year\": 2025,\n                \"month\": 10,\n                \"count\": 1\n            },\n            {\n                \"year\": 2025,\n                \"month\": 11,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 12,\n                \"count\": 0\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "get_event_growth",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/get_event_growth?year=2025",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "get_event_growth"
+              ],
+              "query": [
+                {
+                  "key": "year",
+                  "value": "2025"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get_event_growth",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{angleUrl}}/api/v1/event/get_event_growth?year=2025",
+                  "host": [
+                    "{{angleUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "event",
+                    "get_event_growth"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "2025"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "506"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"1fa-wqd3OcLjqy7MNXRdfp05Mrr91sU\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 19 Oct 2025 00:11:59 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"message\": \"Successfully Find By All Event Growth \",\n    \"data\": {\n        \"monthlyStats\": [\n            {\n                \"year\": 2025,\n                \"month\": 1,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 2,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 3,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 4,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 5,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 6,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 7,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 8,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 9,\n                \"count\": 25\n            },\n            {\n                \"year\": 2025,\n                \"month\": 10,\n                \"count\": 11\n            },\n            {\n                \"year\": 2025,\n                \"month\": 11,\n                \"count\": 0\n            },\n            {\n                \"year\": 2025,\n                \"month\": 12,\n                \"count\": 0\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "find_by_all_event",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/find_by_all_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "find_by_all_event"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_join_eventgroup done",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/join_group/find_by_all_join_eventgroup?page=6&limit=10",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "join_group",
+                "find_by_all_join_eventgroup"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "6"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_event_chatroom",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event_chat_room/find_by_all_event_chatroom",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event_chat_room",
+                "find_by_all_event_chatroom"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_social_feed_report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_report/find_by_all_social_feed_report",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_report",
+                "find_by_all_social_feed_report"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_social_feed_report",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_report/delete_social_feed_report/68f53344814c7e648b6cfb29",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_report",
+                "delete_social_feed_report",
+                "68f53344814c7e648b6cfb29"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "admin_delete_event",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{admin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// thrillseekers                                                                                                                                                                \r\n  {\r\n    \"email\":\"info.sohelranaa@gmail.com\",\r\n    \"password\":\"215019\"\r\n}\r\n\r\n// admin \r\n// {\r\n//     \"email\": \"amsr215019@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n// host \r\n// {\r\n//     \"email\":\"sakeg36735@ishense.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"tidoh87712@skateru.com\",\r\n//      \"password\": \"12345678\"\r\n// }\r\n\r\n// {\r\n//     \"email\":\"eusoufriyaj@gmail.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"riyajuddeeneusoufoffice@gmail.com\",\r\n//     \"password\":\"12345678\"\r\n// }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/event/admin_delete_event/68d5c3b01e52c7604bef9b66",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "event",
+                "admin_delete_event",
+                "68d5c3b01e52c7604bef9b66"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "item": [
+        {
+          "name": "sendPushNotification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjcxZTI3MDI1NmRkYjBiODlkZDIxNCIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJpbmZvLnNvaGVscmFuYWFAZ21haWwuY29tIiwiaWF0IjoxNzYwODI0NzAzLCJleHAiOjE3NjE2ODg3MDN9.PXf7V2Uoh4vImNg7erZ0-nPM93fqssLi-Wt8jEYR4Kc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n{\r\n    \"title\": \"Meeting Reminder\",\r\n    \"content\": \"Don’t forget the client meeting tomorrow.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/notification/sendPushNotification",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "sendPushNotification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "specific_user_notification_list",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/notification/specific_user_notification_list",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "specific_user_notification_list"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_notification",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/notification/find_my_notification",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "find_my_notification"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "chnage_notification_status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"notificationId\":\"6935bafe22f2f31c8d28cf3d\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/notification/change_notification_status",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "change_notification_status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "item": [
+        {
+          "name": "find_by_specific_conversation",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzA5MzZiODdhZmU3MWRjOTg2ZjRhZCIsInJvbGUiOiJob3N0IiwiZW1haWwiOiJldXNvdWZyaXlhakBnbWFpbC5jb20iLCJpYXQiOjE3NzYwMzA5ODUsImV4cCI6MTc3Njg5NDk4NX0.c6ILRTysioLlIqy1Khk3BJS9L7keZKuiIia6XNPryMo",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// thrillseekers                                                                                                                                                                \r\n  {\r\n    \"email\":\"info.sohelranaa@gmail.com\",\r\n    \"password\":\"215019\"\r\n}\r\n\r\n// admin \r\n// {\r\n//     \"email\": \"amsr215019@gmail.com\",\r\n//     \"password\": \"12345678\"\r\n// }\r\n// host \r\n// {\r\n//     \"email\":\"sakeg36735@ishense.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"tidoh87712@skateru.com\",\r\n//      \"password\": \"12345678\"\r\n// }\r\n\r\n// {\r\n//     \"email\":\"eusoufriyaj@gmail.com\",\r\n//     \"password\": \"123456\"\r\n// }\r\n// {\r\n//     \"email\":\"riyajuddeeneusoufoffice@gmail.com\",\r\n//     \"password\":\"12345678\"\r\n// }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/message/find_by_specific_conversation/69ac7cf3987b6e625af53ab6",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "message",
+                "find_by_specific_conversation",
+                "69ac7cf3987b6e625af53ab6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send_message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzA5MzZiODdhZmU3MWRjOTg2ZjRhZCIsInJvbGUiOiJob3N0IiwiZW1haWwiOiJldXNvdWZyaXlhakBnbWFpbC5jb20iLCJpYXQiOjE3NzYwMzIzMjUsImV4cCI6MTc3Njg5NjMyNX0.KN2vfQotfUkb46FQmWXi28kIliZSsKaE8zv9kU9ebh0",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"text\": \"okay i am sohel rana 448 ?\",\n    \"storyUrl\": \"src/public/images/18-9089dcc1-a151-46c8-993e-a9c190fad284.jpg\",\n    \"receiverId\": \"68dc34d40809941ba052c9ff\"\n  }",
+                  "type": "text",
+                  "uuid": "7fe57c74-1ba2-4ada-8218-9f51bb42fe68"
+                },
+                {
+                  "key": "imageUrl",
+                  "type": "file",
+                  "uuid": "f8f74398-7ba9-47bd-9466-759e815d3f90",
+                  "src": "/C:/Users/infos/Downloads/Screenshot 2025-10-22 005021.png",
+                  "disabled": true
+                },
+                {
+                  "key": "audioUrl",
+                  "type": "file",
+                  "uuid": "245a444f-fa16-4b6b-bcbc-4d71388bca3c",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/message/new_message",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "message",
+                "new_message"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_message",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/message/delete_message/68f5269321ef9bc1bcd919d7",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "message",
+                "delete_message",
+                "68f5269321ef9bc1bcd919d7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update_message_by_Id",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data ",
+                  "value": "{\n    \"text\": \"okay ?\",\n    \"eventId\": \"6713bc85d4a2e25c347ab3f9\",\n    \"receiverId\": \"68b71e270256ddb0b89dd214\"\n  }",
+                  "type": "text",
+                  "uuid": "aca846ad-3f66-408c-9ae4-b5ec3da3ee71"
+                },
+                {
+                  "key": "imageUrl",
+                  "type": "file",
+                  "uuid": "e25874c2-407a-4ab1-92d0-ae69742186d1",
+                  "src": "/C:/Users/infos/Downloads/image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/message/update_message_by_Id/messageId",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "message",
+                "update_message_by_Id",
+                "messageId"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "single_new_message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjcxZTI3MDI1NmRkYjBiODlkZDIxNCIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJpbmZvLnNvaGVscmFuYWFAZ21haWwuY29tIiwiaWF0IjoxNzYwOTk0NTIxLCJleHAiOjE3NjE4NTg1MjF9.Ph3YIO3cw8XF68XCSU6wsKEb3GZppyIHd4_sXlO4wgc",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n    \"text\":\"i am sohel rana \",\n    \"receiverId\":\"68b76fca5941636d3fb7dfd1\",\n    \"singlechat\":\"singlechat\"\n}\n",
+                  "type": "text",
+                  "uuid": "19f15cf3-1a42-4f37-8072-7d9b044c1cdb"
+                },
+                {
+                  "key": "imageUrl",
+                  "type": "file",
+                  "uuid": "02b15e1c-fe5f-4a9a-9685-af9c77e70930",
+                  "src": "/C:/Users/infos/Downloads/image (19).png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/message/single_new_message",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "message",
+                "single_new_message"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "social_feed_report",
+      "item": [
+        {
+          "name": "recorded_report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"event_postId\":\"68ed4c55c518ede42a47b0a3\",\r\n    \"reason\":\"where are you reporting this post?\",\r\n    \"details\":\"the quick brown fox jumps over wherhjgqaw\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/social_feed_report/recorded_report",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "social_feed_report",
+                "recorded_report"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "point_system",
+      "item": [
+        {
+          "name": "my_avg_point",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NjEyNTYyMDAsImV4cCI6MTc2MjEyMDIwMH0.vOQqesivO4sjeutJxjVtueFfzlqi_5dfPrVP1hEE3qk",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n     \"eventId\":\"68c74468f65d8cfd94cff090\"\r\n\r\n}"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/point_system/my_avg_point",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "point_system",
+                "my_avg_point"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rating",
+      "item": [
+        {
+          "name": "record_rating_event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"eventId\":\"68c74468f65d8cfd94cff090\",\r\n    \"rating\":4\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/rating/record_rating_event",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rating",
+                "record_rating_event"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "item": [
+        {
+          "name": "contact",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Md Sohel Rana\",\r\n    \"email\": \"sohelrana@gmail.com\",\r\n    \"subject\": \"App Login Issue\",\r\n    \"message\": \"I am unable to log into my account. Please help resolve this issue.\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/support/contact",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "support",
+                "contact"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_by_all_issues",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Md Sohel Rana\",\r\n    \"email\": \"sohelrana@gmail.com\",\r\n    \"subject\": \"App Login Issue\",\r\n    \"message\": \"I am unable to log into my account. Please help resolve this issue.\"\r\n  }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/support/find_by_all_issues",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "support",
+                "find_by_all_issues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_support",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Md Sohel Rana\",\r\n    \"email\": \"sohelrana@gmail.com\",\r\n    \"subject\": \"App Login Issue\",\r\n    \"message\": \"I am unable to log into my account. Please help resolve this issue.\"\r\n  }"
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/support/delete_support/69cace43e5cf7647b410e580",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "support",
+                "delete_support",
+                "69cace43e5cf7647b410e580"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "resolve_issues",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isSolve\":true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/support/resolve_issues/69cad7ae7ee961e79e636bb0",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "support",
+                "resolve_issues",
+                "69cad7ae7ee961e79e636bb0"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "store_react",
+      "item": [
+        {
+          "name": "record_store_react",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"storeId\": \"69d15d15ed8792326c24297d\",\r\n    \"isReact\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/store_react/record_store_react",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "store_react",
+                "record_store_react"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "find_my_all_store_reacts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "data",
+                  "value": "{\n  \"message\": \"Hi Here Is My Stores \"\n}\n\n",
+                  "type": "text",
+                  "uuid": "0df35a94-fb01-4130-ba53-eac1fb4b5b4f",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "f36adf8e-45e3-4616-87d5-7b8d53224575",
+                  "src": "/C:/Users/infos/Downloads/Generated Image September 30, 2025 - 2_05AM.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/store_react/find_my_all_store_reacts/69d15d3ded8792326c24299f",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "store_react",
+                "find_my_all_store_reacts",
+                "69d15d3ded8792326c24299f"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete_store_react",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{host}}",
+                "type": "text",
+                "disabled": true
+              },
+              {
+                "key": "Authorization",
+                "value": "{{thrillseekers}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{angleUrl}}/api/v1/store_react/delete_store_react/69d15d3ded8792326c24299f",
+              "host": [
+                "{{angleUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "store_react",
+                "delete_store_react",
+                "69d15d3ded8792326c24299f"
+              ],
+              "query": [
+                {
+                  "key": "data",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Folder",
+      "item": []
+    },
+    {
+      "name": "recorded_point_system",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGMzNGQ0MDgwOTk0MWJhMDUyYzlmZiIsInJvbGUiOiJ0aHJpbGxzZWVrZXJzIiwiZW1haWwiOiJyaXlhanVkZGVlbmV1c291Zm9mZmljZUBnbWFpbC5jb20iLCJpYXQiOjE3NjEyNTYyMDAsImV4cCI6MTc2MjEyMDIwMH0.vOQqesivO4sjeutJxjVtueFfzlqi_5dfPrVP1hEE3qk",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "Authorization",
+            "value": "{{thrillseekers}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n     \"eventId\":\"68c74468f65d8cfd94cff090\"\r\n\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{angleUrl}}/api/v1/point_system/recorded_point_system",
+          "host": [
+            "{{angleUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "point_system",
+            "recorded_point_system"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "http://10.10.20.13:3056",
+      "value": ""
+    }
+  ]
+}

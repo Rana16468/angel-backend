@@ -138,6 +138,14 @@ const resetPasswordSchema = z.object({
   }),
 });
 
+const resendOtpZodSchema = z.object({
+  body: z.object({
+    email: z
+      .string({ error: "Email is required" })
+      .email("Invalid email format"),
+  }),
+});
+
 const UserValidationSchema = {
   createUserZodSchema,
   UserVerification,
@@ -146,6 +154,8 @@ const UserValidationSchema = {
   ForgotPasswordSchema,
   verificationCodeSchema,
   resetPasswordSchema,
+  resendOtpZodSchema,
 };
 
 export default UserValidationSchema;
+

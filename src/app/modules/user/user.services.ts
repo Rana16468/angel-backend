@@ -11,6 +11,53 @@ import emailContext from '../../utils/emailcontext/sendvarificationData';
 import { jwtHelpers } from '../../helper/jwtHelpers';
 import config from '../../config';
 
+/**
+ * Progressive OTP Resend Cooldown:
+ * 1st request -> 10s cooldown
+ * 2nd request -> 30s cooldown
+ * 3rd request -> 60s (1 min) cooldown
+ * 4th+ requests -> 60s (1 min) cooldown
+ */
+const calculateOtpCooldown = (count: number): number => {
+  if (count <= 1) return 10;
+  if (count === 2) return 30;
+  return 60;
+};
+
+const validateOtpCooldown = (
+  lastOtpSentAt?: Date,
+  otpRequestCount: number = 0
+): { nextAttemptCount: number; cooldownSeconds: number } => {
+  const now = Date.now();
+  if (lastOtpSentAt) {
+    const lastSentTime = new Date(lastOtpSentAt).getTime();
+    const elapsedSeconds = Math.floor((now - lastSentTime) / 1000);
+    const RESET_WINDOW_SECONDS = 15 * 60; // 15 minutes of inactivity resets cooldown cycle
+
+    if (elapsedSeconds < RESET_WINDOW_SECONDS) {
+      const currentCooldown = calculateOtpCooldown(otpRequestCount);
+      if (elapsedSeconds < currentCooldown) {
+        const remainingSeconds = currentCooldown - elapsedSeconds;
+        throw new AppError(
+          httpStatus.TOO_MANY_REQUESTS,
+          `Please wait ${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''} before requesting a new OTP.`,
+          ''
+        );
+      }
+      const nextAttemptCount = (otpRequestCount || 1) + 1;
+      return {
+        nextAttemptCount,
+        cooldownSeconds: calculateOtpCooldown(nextAttemptCount),
+      };
+    }
+  }
+
+  return {
+    nextAttemptCount: 1,
+    cooldownSeconds: calculateOtpCooldown(1),
+  };
+};
+
 const generateUniqueOTP = async (): Promise<number> => {
   const MAX_ATTEMPTS = 10;
 
@@ -37,14 +84,12 @@ const createUserIntoDb = async (payload: TUser) => {
   session.startTransaction();
 
   try {
-    const otp = await generateUniqueOTP();
-
     const isExistUser = await users.findOne({
       email: payload?.email,
       isDelete: false,
     });
 
-    if (isExistUser) {
+    if (isExistUser && isExistUser.isVerify) {
       throw new AppError(
         httpStatus.CONFLICT, // 409
         'This email already exists in our database',
@@ -52,11 +97,65 @@ const createUserIntoDb = async (payload: TUser) => {
       );
     }
 
+    const otp = await generateUniqueOTP();
+    const now = new Date();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
+
+    // If an unverified account already exists, update and resend with cooldown check
+    if (isExistUser && !isExistUser.isVerify) {
+      const { nextAttemptCount, cooldownSeconds } = validateOtpCooldown(
+        isExistUser.lastOtpSentAt,
+        isExistUser.otpRequestCount || 0
+      );
+
+      if (payload.password) {
+        payload.password = await bcrypt.hash(
+          payload.password,
+          Number(config.bcrypt_salt_rounds)
+        );
+      }
+
+      await users.updateOne(
+        { _id: isExistUser._id },
+        {
+          $set: {
+            ...payload,
+            verificationCode: otp,
+            otpRequestCount: nextAttemptCount,
+            lastOtpSentAt: now,
+            otpExpiresAt,
+          },
+        },
+        { session }
+      );
+
+      await session.commitTransaction();
+      session.endSession();
+
+      await sendEmail(
+        payload.email,
+        emailContext.sendVerificationData(
+          payload.name || payload.email,
+          otp,
+          'User Verification Email',
+        ),
+        'Verification OTP Code',
+      );
+
+      return {
+        status: true,
+        message: 'Check your email inbox for verification code',
+        cooldownSeconds,
+      };
+    }
+
+    const { nextAttemptCount, cooldownSeconds } = validateOtpCooldown(undefined, 0);
+
     payload.verificationCode = otp;
-    // create   unique subname 
-
+    payload.otpRequestCount = nextAttemptCount;
+    payload.lastOtpSentAt = now;
+    payload.otpExpiresAt = otpExpiresAt;
     payload.subname = `${payload.name.toLowerCase().replace(/\s+/g, "_")}_${Math.floor(1000 + Math.random() * 9000)}`;
-
 
     const authBuilder = new users(payload);
     const result = await authBuilder.save({ session });
@@ -71,14 +170,19 @@ const createUserIntoDb = async (payload: TUser) => {
     await sendEmail(
       payload.email,
       emailContext.sendVerificationData(
-        payload.email,
+        payload.name || payload.email,
         otp,
         'User Verification Email',
       ),
       'Verification OTP Code',
     );
 
-    return { status: true, message: 'Check your email inbox for verification code' };
+
+    return {
+      status: true,
+      message: 'Check your email inbox for verification code',
+      cooldownSeconds,
+    };
   } catch (error: any) {
     await session.abortTransaction();
     session.endSession();
@@ -106,16 +210,38 @@ const userVarificationIntoDb = async (verificationCode: number) => {
       );
     }
 
-    const updatedUser = await users.findOneAndUpdate(
-      { verificationCode },
+    const isExistUser = await users.findOne({ verificationCode, isDelete: false });
+
+    if (!isExistUser) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Invalid verification code', '');
+    }
+
+    if (isExistUser.otpExpiresAt && new Date() > new Date(isExistUser.otpExpiresAt)) {
+      throw new AppError(
+        httpStatus.GONE,
+        'OTP has expired. Please request a new one.',
+        ''
+      );
+    }
+
+    const updatedUser = await users.findByIdAndUpdate(
+      isExistUser._id,
       {
-        isVerify: true,
+        $set: {
+          isVerify: true,
+          otpRequestCount: 0,
+          lastOtpSentAt: null,
+        },
+        $unset: {
+          verificationCode: '',
+          otpExpiresAt: '',
+        },
       },
       { new: true },
     );
 
     if (!updatedUser) {
-      throw new AppError(httpStatus.NOT_FOUND, 'Invalid verification code', '');
+      throw new AppError(httpStatus.NOT_FOUND, 'User verification failed', '');
     }
 
     const jwtPayload = {
@@ -139,12 +265,76 @@ const userVarificationIntoDb = async (verificationCode: number) => {
       accessToken,
     };
   } catch (error: any) {
+    if (error instanceof AppError) {
+      throw error;
+    }
     throw new AppError(
       httpStatus.SERVICE_UNAVAILABLE,
       'Verification auth error',
       error,
     );
   }
+};
+
+const resendOtpIntoDb = async (payload: { email: string }) => {
+  const { email } = payload;
+  if (!email) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Email is required', '');
+  }
+
+  const isExistUser = await users.findOne({
+    email,
+    isDelete: false,
+  });
+
+  if (!isExistUser) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found with this email', '');
+  }
+
+  // Progressive cooldown check
+  const { nextAttemptCount, cooldownSeconds } = validateOtpCooldown(
+    isExistUser.lastOtpSentAt,
+    isExistUser.otpRequestCount || 0
+  );
+
+  const otp = await generateUniqueOTP();
+  const now = new Date();
+  const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+  await users.updateOne(
+    { _id: isExistUser._id },
+    {
+      $set: {
+        verificationCode: otp,
+        otpRequestCount: nextAttemptCount,
+        lastOtpSentAt: now,
+        otpExpiresAt,
+      },
+    }
+  );
+
+  const emailSubject = isExistUser.isVerify
+    ? 'Forgot Password Verification OTP Code'
+    : 'Verification OTP Code';
+  const emailContextTitle = isExistUser.isVerify
+    ? 'Forgot Password Verification Code'
+    : 'User Verification Email';
+
+  await sendEmail(
+    email,
+    emailContext.sendVerificationData(
+      isExistUser.name || email,
+      otp,
+      emailContextTitle
+    ),
+    emailSubject
+  );
+
+  return {
+    status: true,
+    message: `Verification code sent to your email. Next resend available in ${cooldownSeconds}s.`,
+    cooldownSeconds,
+  };
 };
 
 const chnagePasswordIntoDb = async (
@@ -215,10 +405,9 @@ const chnagePasswordIntoDb = async (
   }
 };
 
-// forgot password
-
 const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
   const session = await mongoose.startSession();
+
   session.startTransaction();
 
   try {
@@ -241,7 +430,7 @@ const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
           { isDelete: false },
         ],
       },
-      { _id: 1, provider: 1 },
+      { _id: 1, name: 1, provider: 1, lastOtpSentAt: 1, otpRequestCount: 1 },
       { session },
     );
 
@@ -249,14 +438,28 @@ const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
       throw new AppError(httpStatus.NOT_FOUND, 'User not found', '');
     }
 
+    // Progressive cooldown check
+    const { nextAttemptCount, cooldownSeconds } = validateOtpCooldown(
+      isExistUser.lastOtpSentAt,
+      isExistUser.otpRequestCount || 0
+    );
+
     const otp = await generateUniqueOTP();
+    const now = new Date();
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     const result = await users.findOneAndUpdate(
       { _id: isExistUser._id },
-      { verificationCode: otp },
+      {
+        $set: {
+          verificationCode: otp,
+          otpRequestCount: nextAttemptCount,
+          lastOtpSentAt: now,
+          otpExpiresAt,
+        },
+      },
       {
         new: true,
-        upsert: true,
         projection: { _id: 1, email: 1 },
         session,
       },
@@ -270,9 +473,9 @@ const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
       await sendEmail(
         emailString,
         emailContext.sendVerificationData(
-          emailString,
+          isExistUser.name || emailString,
           otp,
-          ' Forgot Password Email',
+          'Forgot Password Email',
         ),
         'Forgot Password Verification OTP Code',
       );
@@ -286,13 +489,22 @@ const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
       );
     }
 
+
     await session.commitTransaction();
     session.endSession();
 
-    return { status: true, message: 'Checked Your Email' };
+    return {
+      status: true,
+      message: 'Checked Your Email',
+      cooldownSeconds,
+    };
   } catch (error: any) {
     await session.abortTransaction();
     session.endSession();
+
+    if (error instanceof AppError) {
+      throw error;
+    }
 
     throw new AppError(
       httpStatus.SERVICE_UNAVAILABLE,
@@ -302,14 +514,9 @@ const forgotPasswordIntoDb = async (payload: string | { email: string }) => {
   }
 };
 
-
-
 const verificationForgotUserIntoDb = async (
   otp: number | { verificationCode: number },
 ): Promise<string> => {
-
-
-
   try {
     let code: number;
 
@@ -330,28 +537,20 @@ const verificationForgotUserIntoDb = async (
           { status: USER_ACCESSIBILITY.isProgress },
         ],
       },
-      { _id: 1, updatedAt: 1, email: 1, role: 1 },
+      { _id: 1, updatedAt: 1, email: 1, role: 1, otpExpiresAt: 1 },
     );
 
     if (!isExistOtp) {
       throw new AppError(httpStatus.NOT_FOUND, 'OTP not found', '');
     }
 
-    // const updatedAt =
-    //   isExistOtp.updatedAt instanceof Date
-    //     ? isExistOtp.updatedAt.getTime()
-    //     : new Date(isExistOtp.updatedAt).getTime();
-
-    // const now = Date.now();
-    // const FIVE_MINUTES = 5 * 60 * 1000;
-
-    // if (now - updatedAt > FIVE_MINUTES) {
-    //   throw new ApiError(
-    //     httpStatus.FORBIDDEN,
-    //     'OTP has expired. Please request a new one.',
-    //     '',
-    //   );
-    // }
+    if (isExistOtp.otpExpiresAt && new Date() > new Date(isExistOtp.otpExpiresAt)) {
+      throw new AppError(
+        httpStatus.GONE,
+        'OTP has expired. Please request a new one.',
+        ''
+      );
+    }
 
     const jwtPayload = {
       id: isExistOtp._id.toString(),
@@ -367,7 +566,10 @@ const verificationForgotUserIntoDb = async (
 
     await users.updateOne(
       { _id: isExistOtp._id },
-      { $unset: { verificationCode: '' } },
+      {
+        $unset: { verificationCode: '', otpExpiresAt: '' },
+        $set: { otpRequestCount: 0, lastOtpSentAt: null },
+      },
     );
 
     return accessToken;
@@ -385,6 +587,7 @@ const verificationForgotUserIntoDb = async (
 };
 
 const resetPasswordIntoDb = async (payload: {
+
   userId: string;
   password: string;
 }) => {
@@ -486,17 +689,17 @@ const googleAuthIntoDb = async (payload: TUser) => {
     );
   }
 };
- 
-
-
 
 const UserServices = {
   createUserIntoDb,
   userVarificationIntoDb,
+  resendOtpIntoDb,
   chnagePasswordIntoDb,
   forgotPasswordIntoDb,
   verificationForgotUserIntoDb,
   resetPasswordIntoDb,
-   googleAuthIntoDb
+  googleAuthIntoDb,
 };
+
 export default UserServices;
+

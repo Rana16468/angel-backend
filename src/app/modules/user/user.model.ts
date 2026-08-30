@@ -42,6 +42,18 @@ const TUserSchema = new Schema<TUser, UserModel>(
       type: Number,
       required: [false, "verification Code is Required"],
     },
+    otpRequestCount: {
+      type: Number,
+      default: 0,
+    },
+    lastOtpSentAt: {
+      type: Date,
+      default: null,
+    },
+    otpExpiresAt: {
+      type: Date,
+      default: null,
+    },
     isVerify: {
       type: Boolean,
       required: [false, "isVartify is not required"],
