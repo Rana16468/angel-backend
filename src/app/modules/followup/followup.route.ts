@@ -36,6 +36,27 @@ router.get(
   FollowUpController.findByEventSocialFeedById
 );
 
+router.get(
+  "/followers/:userId",
+  auth(
+    USER_ROLE.host,
+    USER_ROLE.thrillseekers,
+    USER_ROLE.admin,
+    USER_ROLE.superAdmin
+  ),
+  FollowUpController.getUserFollowersList
+);
 
-const FollowupRouters= router;
-export  default FollowupRouters;
+router.get(
+  "/following/:userId",
+  auth(
+    USER_ROLE.host,
+    USER_ROLE.thrillseekers,
+    USER_ROLE.admin,
+    USER_ROLE.superAdmin
+  ),
+  FollowUpController.getUserFollowingList
+);
+
+const FollowupRouters = router;
+export default FollowupRouters;

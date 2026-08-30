@@ -159,25 +159,50 @@ const findByEventSocialFeedById: RequestHandler = catchAsync(
   }
 );
 
+const getUserFollowersList: RequestHandler = catchAsync(async (req, res) => {
+  const result = await FollowUpServices.getUserFollowersListIntoDb(
+    req.params.userId,
+    req.user.id,
+    req.query
+  );
 
+  sendResponse(res, {
+    success: true,
+    statusCode: status.OK,
+    message: "User followers fetched successfully",
+    data: result,
+  });
+});
 
+const getUserFollowingList: RequestHandler = catchAsync(async (req, res) => {
+  const result = await FollowUpServices.getUserFollowingListIntoDb(
+    req.params.userId,
+    req.user.id,
+    req.query
+  );
 
+  sendResponse(res, {
+    success: true,
+    statusCode: status.OK,
+    message: "User following list fetched successfully",
+    data: result,
+  });
+});
 
+const FollowUpController = {
+  recordedFollowUp,
+  findByEventSocialFeedFolloweWiseFiltering,
+  findMyFollowedList,
+  myFollowingAndFollowerList,
+  sendInvitasationNotification,
+  findMyFollowingList,
+  deleteFollowerList,
+  isBlockFollowerAndFollowing,
+  findBySpecificFollowingUser,
+  getBlockedUsers,
+  findByEventSocialFeedById,
+  getUserFollowersList,
+  getUserFollowingList,
+};
 
-
- const  FollowUpController={
-     recordedFollowUp,
-     findByEventSocialFeedFolloweWiseFiltering,
-     findMyFollowedList,
-     myFollowingAndFollowerList,
-     sendInvitasationNotification,
-     findMyFollowingList,
-     deleteFollowerList,
-     isBlockFollowerAndFollowing,
-     findBySpecificFollowingUser,
-     getBlockedUsers,
-     findByEventSocialFeedById
-  
- };
-
- export default FollowUpController;
+export default FollowUpController;

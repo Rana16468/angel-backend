@@ -370,7 +370,6 @@ const myFollowingAndFollowerListIntoDb = async (
   receiverId: string
 ) => {
   try {
-    
     if (
       !mongoose.Types.ObjectId.isValid(receiverId) ||
       !mongoose.Types.ObjectId.isValid(userId)
@@ -381,11 +380,11 @@ const myFollowingAndFollowerListIntoDb = async (
     // ⚡ Fetch all essential info in parallel
     const [followingCount, followerCount, totalPosts, userInfo, followRecord, conversation] =
       await Promise.all([
-        followups.countDocuments({ userId, isDelete: false }),
-        followups.countDocuments({ followupId: userId, isDelete: false }),
-        eventposts.countDocuments({ userId, isDelete: false }),
-        users.findById(receiverId).select("name photo").lean(),
-        followups.findOne({ userId, followupId: receiverId }).select("isFollowUp isBlock").lean(),
+        followups.countDocuments({ userId: receiverId, isDelete: false, isFollowUp: true }),
+        followups.countDocuments({ followupId: receiverId, isDelete: false, isFollowUp: true }),
+        eventposts.countDocuments({ userId: receiverId, isDelete: false }),
+        users.findById(receiverId).select("name photo subname").lean(),
+        followups.findOne({ userId, followupId: receiverId, isDelete: false }).select("isFollowUp isBlock").lean(),
         conversations.findOne({
           participants: {
             $all: [
@@ -401,14 +400,10 @@ const myFollowingAndFollowerListIntoDb = async (
     // 🧠 Validate user existence
     if (!userInfo) {
       throw new AppError(status.NOT_FOUND, "User not found");
-    };
+    }
 
-
-    
-
-// &name=Sohel Host
     const isFollowups = !!followRecord?.isFollowUp;
-    const isBlock=!!followRecord?.isBlock
+    const isBlock = !!followRecord?.isBlock;
 
     // ✅ Final structured response
     return {
@@ -429,6 +424,144 @@ const myFollowingAndFollowerListIntoDb = async (
       status.SERVICE_UNAVAILABLE,
       "Server unavailable while fetching user stats",
       error.message
+    );
+  }
+};
+
+const getUserFollowersListIntoDb = async (
+  targetUserId: string,
+  currentUserId: string,
+  query: Record<string, unknown>
+) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(targetUserId)) {
+      throw new AppError(status.BAD_REQUEST, "Invalid user ID");
+    }
+
+    const baseQuery = followups
+      .find({
+        followupId: targetUserId,
+        isFollowUp: true,
+        isDelete: false,
+      })
+      .populate([
+        {
+          path: "userId",
+          select: "name photo subname role",
+        },
+      ])
+      .select("-isDelete -updatedAt -eventpostId -eventId")
+      .lean();
+
+    const followerQuery = new QueryBuilder(baseQuery, query)
+      .search(["userId.name"])
+      .filter()
+      .sort()
+      .paginate();
+
+    const followerList: any[] = await followerQuery.modelQuery;
+    const meta = await followerQuery.countTotal();
+
+    // Check which followers the current user is following
+    const followerUserIds = followerList
+      .map((item) => item.userId?._id)
+      .filter(Boolean);
+
+    const currentUserFollowing = await followups
+      .find({
+        userId: currentUserId,
+        followupId: { $in: followerUserIds },
+        isFollowUp: true,
+        isDelete: false,
+      })
+      .distinct("followupId");
+
+    const followingSet = new Set(
+      currentUserFollowing.map((id) => id.toString())
+    );
+
+    const data = followerList.map((item) => ({
+      ...item,
+      isFollowedByMe: item.userId?._id
+        ? followingSet.has(item.userId._id.toString())
+        : false,
+    }));
+
+    return { meta, data };
+  } catch (error: any) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      status.SERVICE_UNAVAILABLE,
+      error?.message || "Failed to fetch user followers list"
+    );
+  }
+};
+
+const getUserFollowingListIntoDb = async (
+  targetUserId: string,
+  currentUserId: string,
+  query: Record<string, unknown>
+) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(targetUserId)) {
+      throw new AppError(status.BAD_REQUEST, "Invalid user ID");
+    }
+
+    const baseQuery = followups
+      .find({
+        userId: targetUserId,
+        isFollowUp: true,
+        isDelete: false,
+      })
+      .populate([
+        {
+          path: "followupId",
+          select: "name photo subname role",
+        },
+      ])
+      .select("-isDelete -updatedAt -eventpostId -eventId")
+      .lean();
+
+    const followingQuery = new QueryBuilder(baseQuery, query)
+      .search(["followupId.name"])
+      .filter()
+      .sort()
+      .paginate();
+
+    const followingList: any[] = await followingQuery.modelQuery;
+    const meta = await followingQuery.countTotal();
+
+    // Check which of these users the current viewer is following
+    const followingUserIds = followingList
+      .map((item) => item.followupId?._id)
+      .filter(Boolean);
+
+    const currentUserFollowing = await followups
+      .find({
+        userId: currentUserId,
+        followupId: { $in: followingUserIds },
+        isFollowUp: true,
+        isDelete: false,
+      })
+      .distinct("followupId");
+
+    const followingSet = new Set(
+      currentUserFollowing.map((id) => id.toString())
+    );
+
+    const data = followingList.map((item) => ({
+      ...item,
+      isFollowedByMe: item.followupId?._id
+        ? followingSet.has(item.followupId._id.toString())
+        : false,
+    }));
+
+    return { meta, data };
+  } catch (error: any) {
+    if (error instanceof AppError) throw error;
+    throw new AppError(
+      status.SERVICE_UNAVAILABLE,
+      error?.message || "Failed to fetch user following list"
     );
   }
 };
@@ -708,14 +841,14 @@ const FollowUpServices = {
   findMyFollowedListIntoDb,
   myFollowingAndFollowerListIntoDb,
   sendInvitasationNotificationIntoDb,
-   findMyFollowingListIntoDb,
-   deleteFollowerListIntoDb,
-   isBlockFollowerAndFollowingIntoDb,
-   findBySpecificFollowingUserIntoDb,
-   getBlockedUsersIntoDb,
-   findByEventSocialFeedByIdIntoDb
-
+  findMyFollowingListIntoDb,
+  deleteFollowerListIntoDb,
+  isBlockFollowerAndFollowingIntoDb,
+  findBySpecificFollowingUserIntoDb,
+  getBlockedUsersIntoDb,
+  findByEventSocialFeedByIdIntoDb,
+  getUserFollowersListIntoDb,
+  getUserFollowingListIntoDb,
 };
 
 export default FollowUpServices;
-
