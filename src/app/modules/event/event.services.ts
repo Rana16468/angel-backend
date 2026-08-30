@@ -926,7 +926,7 @@ const SearchingNearestLocationWaysNonEventIntoDb = async (
       return {
         id: place.place_id,
         name: place.name || "N/A",
-        address: place.vicinity || "N/A",
+        address: place.vicinity || place.formatted_address || "Location unavailable",
         rating: place.rating ?? 0,
         totalRatings: place.user_ratings_total ?? 0,
         location: place.geometry?.location || { lat: 0, lng: 0 },
