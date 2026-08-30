@@ -9,3 +9,4 @@ export interface TPointSystem {
 export interface PointSystemModel extends Model<TPointSystem> {
   isPointSystemCustomId(id: string): Promise<TPointSystem>;
 }
+

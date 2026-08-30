@@ -13,6 +13,10 @@ const router=express.Router();
 router.post("/recorded_point_system", auth(USER_ROLE.host,USER_ROLE.thrillseekers), validationRequest( PointSystemValidation.PointSystemValidationSchema), PaymentSystemController.recordedPointSystem);
 router.get("/my_avg_point", auth(USER_ROLE.host,USER_ROLE.thrillseekers), PaymentSystemController.findMyAveragePointSystem);
 
+// point rules 
+router.get("/point_rules", auth(USER_ROLE.host, USER_ROLE.thrillseekers, USER_ROLE.admin, USER_ROLE.superAdmin), PaymentSystemController.findPointRules);
+
 const PointSystemRouter=router;
 
 export default PointSystemRouter;
+

@@ -28,10 +28,22 @@ const  findMyAveragePointSystem:RequestHandler=catchAsync(async(req , res)=>{
   });
 })
 
+const findPointRules: RequestHandler = catchAsync(async (req, res) => {
+  const result = await PaymentSystemServices.findPointRulesIntoDb();
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Successfully Find Point Rules',
+    data: result,
+  });
+});
 
 const PaymentSystemController={
     recordedPointSystem,
-    findMyAveragePointSystem
+    findMyAveragePointSystem,
+    findPointRules,
 };
 
-export default PaymentSystemController; 
+export default PaymentSystemController;
+
+ 
