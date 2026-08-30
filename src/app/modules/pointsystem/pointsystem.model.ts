@@ -9,18 +9,44 @@ const TPointSystemSchema = new Schema<TPointSystem, PointSystemModel>(
       type: String,
       required: [true, 'userId is required'],
       trim: true,
-      index:true
+      index: true,
     },
     eventId: {
       type: String,
-      required: [true ,' eventId is  required'],
+      required: [true, 'eventId is required'],
       trim: true,
-      index:true
+      index: true,
+    },
+    actionType: {
+      type: String,
+      enum: ['comment', 'photo', 'video', 'redemption', 'custom'],
+      default: 'custom',
+      index: true,
     },
     point: {
       type: Number,
-      required: [false ,'point is required'],
-      default: 10,
+      required: [true, 'point is required'],
+      default: 0,
+    },
+    ticketCashPrice: {
+      type: Number,
+      default: null,
+    },
+    ticketPointsPrice: {
+      type: Number,
+      default: null,
+    },
+    discountAmount: {
+      type: Number,
+      default: null,
+    },
+    cashPaid: {
+      type: Number,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
     },
     isDelete: {
       type: Boolean,
@@ -31,6 +57,7 @@ const TPointSystemSchema = new Schema<TPointSystem, PointSystemModel>(
     timestamps: true,
   }
 );
+
 
 
 // midlewere
