@@ -11,3 +11,7 @@ src/public/temp/
 src/public/images/
 src/public/videos/
 src/public/pdf/
+
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
