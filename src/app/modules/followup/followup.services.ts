@@ -255,7 +255,7 @@ const findByEventSocialFeedFolloweWiseFilteringIntoDb = async (
   };
 };
 
-const findByEventSocialFeedByIdIntoDb = async (postId: string) => {
+const findByEventSocialFeedByIdIntoDb = async (postId: string, userId: string) => {
    try{
 
      const result = await eventposts.aggregate([
@@ -310,6 +310,77 @@ const findByEventSocialFeedByIdIntoDb = async (postId: string) => {
         ],
       },
     },
+    
+    // Reaction Info
+    {
+      $lookup: {
+        from: "reacteventposts",
+        let: { postId: "$_id", currentUserId: new mongoose.Types.ObjectId(userId) },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$eventpostId", "$$postId"] },
+                  { $eq: ["$userId", "$$currentUserId"] },
+                  { $eq: ["$isDelete", false] },
+                ],
+              },
+            },
+          },
+          { $project: { isReact: 1 } },
+        ],
+        as: "reactInfo",
+      },
+    },
+
+    // Follow Info
+    {
+      $lookup: {
+        from: "followups",
+        let: {
+          currentUserId: new mongoose.Types.ObjectId(userId),
+          postUserId: "$userId",
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$userId", "$$currentUserId"] },
+                  { $eq: ["$followupId", "$$postUserId"] },
+                  { $eq: ["$isFollowUp", true] },
+                  { $eq: ["$isDelete", false] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "followInfo",
+      },
+    },
+
+    // Computed Fields
+    {
+      $addFields: {
+        isReact: {
+          $cond: [
+            { $gt: [{ $size: "$reactInfo" }, 0] },
+            { $arrayElemAt: ["$reactInfo.isReact", 0] },
+            false,
+          ],
+        },
+        isFollowUp: { $gt: [{ $size: "$followInfo" }, 0] },
+      },
+    },
+    
+    // Cleanup internal fields
+    {
+      $project: {
+        reactInfo: 0,
+        followInfo: 0
+      }
+    }
   ]);
 
   return result.length ? result[0] : null;
