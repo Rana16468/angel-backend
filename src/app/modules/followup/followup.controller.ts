@@ -147,7 +147,8 @@ sendResponse(res, {
 const findByEventSocialFeedById: RequestHandler = catchAsync(
   async (req, res) => {
     const result = await FollowUpServices.findByEventSocialFeedByIdIntoDb(
-      req.params.id
+      req.params.id,
+      req.user.id
     );
 
     sendResponse(res, {
