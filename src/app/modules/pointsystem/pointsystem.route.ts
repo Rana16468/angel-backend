@@ -39,7 +39,7 @@ router.post(
   validationRequest(PointSystemValidation.redeemPointsSchema),
   PaymentSystemController.redeemPoints
 );
-
+//test
 // Get user points balance & stats
 router.get(
   "/my_avg_point",
@@ -63,4 +63,4 @@ const PointSystemRouter = router;
 
 export default PointSystemRouter;
 
-
+
