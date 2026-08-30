@@ -60,11 +60,18 @@ const verificationForgotUser: RequestHandler = catchAsync(async (req, res) => {
 
 const resetPassword: RequestHandler = catchAsync(async (req, res) => {
   const result = await UserServices.resetPasswordIntoDb(req.body);
+  const { refreshToken, accessToken, ...otherData } = result as any;
+  if (refreshToken) {
+    res.cookie("refreshToken", refreshToken, {
+      secure: config?.NODE_ENV === "production",
+      httpOnly: true,
+    });
+  }
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Successfully Reset Password",
-    data: result,
+    data: { ...otherData, accessToken },
   });
 });
 

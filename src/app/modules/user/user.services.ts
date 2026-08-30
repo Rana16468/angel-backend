@@ -620,7 +620,33 @@ const resetPasswordIntoDb = async (payload: {
       { password: payload.password },
       { new: true, upsert: true },
     );
-    return result && { status: true, message: 'successfylly reset password' };
+
+    let accessToken: string | null = null;
+    let refreshToken: string | null = null;
+    if (result) {
+      const jwtPayload = {
+        id: result._id.toString(),
+        role: result.role,
+        email: result.email,
+      };
+      accessToken = jwtHelpers.generateToken(
+        jwtPayload,
+        config.jwt_access_secret as string,
+        config.expires_in as string
+      );
+      refreshToken = jwtHelpers.generateToken(
+        jwtPayload,
+        config.jwt_refresh_secret as string,
+        config.refresh_expires_in as string
+      );
+    }
+
+    return result && { 
+        status: true, 
+        message: 'successfully reset password',
+        accessToken,
+        refreshToken
+    };
   } catch (error: any) {
     throw new AppError(
       httpStatus.SERVICE_UNAVAILABLE,
