@@ -95,9 +95,7 @@ const AudienceSettingsSchema = z
 
     notification: NotificationSchema.optional(),
 
-    ticket_point_value: z.number({
-      message: "Ticket point value is required",
-    }),
+    ticket_point_value: z.number().optional(),
 
     ticket_price: TicketPriceEnum,
 
@@ -106,7 +104,7 @@ const AudienceSettingsSchema = z
     event_location: EventLocationSchema,
   })
   .superRefine((data, ctx) => {
-    // Paid event must have price
+    // Paid event must have price and ticket_point_value
     if (
       data.ticket_price === "paid" &&
       typeof data.price !== "number"
@@ -118,7 +116,18 @@ const AudienceSettingsSchema = z
       });
     }
 
-    // Free event cannot have price
+    if (
+      data.ticket_price === "paid" &&
+      typeof data.ticket_point_value !== "number"
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["ticket_point_value"],
+        message: "Ticket point value is required when ticket_price is 'paid'",
+      });
+    }
+
+    // Free event cannot have price or ticket_point_value
     if (
       data.ticket_price === "free" &&
       data.price !== undefined
@@ -127,6 +136,17 @@ const AudienceSettingsSchema = z
         code: z.ZodIssueCode.custom,
         path: ["price"],
         message: "Price must not exist when ticket_price is 'free'",
+      });
+    }
+
+    if (
+      data.ticket_price === "free" &&
+      data.ticket_point_value !== undefined
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["ticket_point_value"],
+        message: "Ticket point value must not exist when ticket_price is 'free'",
       });
     }
   });

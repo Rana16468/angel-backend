@@ -71,7 +71,7 @@ const AudienceSettingsSchema = new Schema<AudienceSettings>(
     },
     social_media: { type: SocialMediaSchema },
     notification: { type: NotificationSchema },
-    ticket_point_value: { type: Number, required: true },
+    ticket_point_value: { type: Number, required: false },
     ticket_price: { type: String, enum: ticketPriceConstant, required: true, index:true },
     price: {
       type: Number,

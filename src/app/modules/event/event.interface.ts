@@ -38,7 +38,7 @@ export interface AudienceSettingsPrivate {
   email: string;
   social_media?: SocialMedia;
   notification?: NotificationSettings;
-  ticket_point_value: number;
+  ticket_point_value?: number;
   ticket_price: "free" | "paid";
   price?: number;
   event_location: EventLocation;
@@ -51,7 +51,7 @@ export interface AudienceSettingsPublic {
   email?: never;
   social_media?: SocialMedia;
   notification?: NotificationSettings;
-  ticket_point_value: number;
+  ticket_point_value?: number;
   ticket_price: "free" | "paid";
   price?: number;
   event_location: EventLocation;
