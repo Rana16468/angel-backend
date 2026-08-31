@@ -5,7 +5,6 @@ import {
   EventLocation,
   EventModel,
   NotificationSettings,
-  PointSystem,
   SocialMedia,
   VenueFacility,
 } from "./event.interface";
@@ -49,13 +48,7 @@ const NotificationSchema = new Schema<NotificationSettings>(
   { _id: true }
 );
 
-const PointSystemSchema = new Schema<PointSystem>(
-  {
-    people: { type: Number, required: true },
-    point: { type: Number, required: true },
-  },
-  { _id: true }
-);
+
 
 const EventLocationSchema = new Schema<EventLocation>(
   {
@@ -78,7 +71,7 @@ const AudienceSettingsSchema = new Schema<AudienceSettings>(
     },
     social_media: { type: SocialMediaSchema },
     notification: { type: NotificationSchema },
-    point_system: { type: PointSystemSchema, required: true },
+    ticket_point_value: { type: Number, required: true },
     ticket_price: { type: String, enum: ticketPriceConstant, required: true, index:true },
     price: {
       type: Number,

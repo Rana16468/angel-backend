@@ -24,10 +24,7 @@ export interface NotificationSettings {
   event_countdown?: boolean;
 }
 
-export interface PointSystem {
-  people: number;
-  point: number;
-}
+
 
 export interface EventLocation {
   lat: string;
@@ -41,7 +38,7 @@ export interface AudienceSettingsPrivate {
   email: string;
   social_media?: SocialMedia;
   notification?: NotificationSettings;
-  point_system: PointSystem;
+  ticket_point_value: number;
   ticket_price: "free" | "paid";
   price?: number;
   event_location: EventLocation;
@@ -54,7 +51,7 @@ export interface AudienceSettingsPublic {
   email?: never;
   social_media?: SocialMedia;
   notification?: NotificationSettings;
-  point_system: PointSystem;
+  ticket_point_value: number;
   ticket_price: "free" | "paid";
   price?: number;
   event_location: EventLocation;

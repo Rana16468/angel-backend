@@ -62,18 +62,7 @@ const NotificationSchema = z.object({
   event_countdown: z.boolean().optional(),
 });
 
-// ----------------------------------------------------
-// Point System
-// ----------------------------------------------------
 
-const PointSystemSchema = z.object({
-  people: z.number({
-    message: "People count is required",
-  }),
-  point: z.number({
-    message: "Point is required",
-  }),
-});
 
 // ----------------------------------------------------
 // Event Location
@@ -106,7 +95,9 @@ const AudienceSettingsSchema = z
 
     notification: NotificationSchema.optional(),
 
-    point_system: PointSystemSchema,
+    ticket_point_value: z.number({
+      message: "Ticket point value is required",
+    }),
 
     ticket_price: TicketPriceEnum,
 

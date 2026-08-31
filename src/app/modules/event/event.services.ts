@@ -425,14 +425,8 @@ const updateEventIntoDb = async (id: string, req: RequestWithFile) => {
         updateData["audience_settings.event_location.lon"] =
           aud.event_location.lon;
 
-      if (aud.point_system) {
-        if (aud.point_system.people !== undefined)
-          updateData["audience_settings.point_system.people"] =
-            aud.point_system.people;
-
-        if (aud.point_system.point !== undefined)
-          updateData["audience_settings.point_system.point"] =
-            aud.point_system.point;
+      if (aud.ticket_point_value !== undefined) {
+        updateData["audience_settings.ticket_point_value"] = aud.ticket_point_value;
       }
 
       if (aud.notification) {
