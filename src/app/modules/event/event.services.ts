@@ -8,7 +8,7 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { searching_event } from "./event.constant";
 import fs from "fs";
 import path from "path";
-import joingroups from "../join_event_group/join_event_group.model";
+import joingroups, { joinusers } from "../join_event_group/join_event_group.model";
 import chatrooms from "../event_chatroom/event_chatroom.model";
 import mongoose, { PipelineStage } from "mongoose";
 import axios from "axios";
@@ -16,6 +16,8 @@ import conversations from "../conversation/conversation.model";
 import messages from "../message/message.model";
 import pointsystems from "../pointsystem/pointsystem.model";
 import ratings from "../rating/rating.model";
+import paymentgateways from "../payment_gateway/payment_gateway.model";
+import { payment_status } from "../payment_gateway/payment_gateway.constant";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 ;
 import eventposts from "../event_post/event_post.model";
@@ -284,6 +286,54 @@ const MyEventTypeWaysFilteringIntoDb = async (
 
       default:
         throw new AppError(status.BAD_REQUEST, "Invalid search term");
+    }
+
+    if (myEvent.length > 0) {
+      const eventIds = myEvent.map((e) => e._id);
+
+      const paidAttendance = await paymentgateways.aggregate([
+        {
+          $match: {
+            eventId: { $in: eventIds },
+            payment_status: payment_status.paid,
+          },
+        },
+        {
+          $group: {
+            _id: "$eventId",
+            total: { $sum: { $ifNull: ["$ticketCount", 1] } },
+          },
+        },
+      ]);
+      const paidMap = new Map(
+        paidAttendance.map((p) => [p._id.toString(), p.total])
+      );
+
+      const joinAttendance = await joinusers.aggregate([
+        {
+          $match: {
+            eventId: { $in: eventIds },
+            isJoin: true,
+            isDelete: { $ne: true },
+          },
+        },
+        {
+          $group: {
+            _id: "$eventId",
+            total: { $sum: 1 },
+          },
+        },
+      ]);
+      const joinMap = new Map(
+        joinAttendance.map((j) => [j._id.toString(), j.total])
+      );
+
+      myEvent = myEvent.map((e) => {
+        const idStr = e._id?.toString() || "";
+        const attendance =
+          (paidMap.get(idStr) || 0) + (joinMap.get(idStr) || 0);
+        return { ...e, totalAttendance: attendance };
+      });
     }
 
     return { meta, myEvent };
@@ -1501,9 +1551,19 @@ const adminDeleteEventIntoDb = async (eventId: string) => {
 
 const hostAllEventAvgRatingIntoDb = async (hostId: string) => {
   try {
-    const [result] = await events.aggregate([
+    const hostObjectId = new mongoose.Types.ObjectId(hostId);
+
+    // 1. Fetch all host events (excluding soft-deleted)
+    const hostEvents = await events
+      .find({ hostId: hostObjectId, isDelete: false })
+      .select("_id");
+    const eventIds = hostEvents.map((e) => e._id);
+    const totalEvents = eventIds.length;
+
+    // 2. Calculate average rating across all host events
+    const [ratingResult] = await events.aggregate([
       {
-        $match: { hostId: new mongoose.Types.ObjectId(hostId) },
+        $match: { hostId: hostObjectId, isDelete: false },
       },
       {
         $lookup: {
@@ -1526,13 +1586,6 @@ const hostAllEventAvgRatingIntoDb = async (hostId: string) => {
       {
         $group: {
           _id: null,
-          events: {
-            $push: {
-              eventId: "$_id",
-              event_title: "$event_title",
-              avgRating: "$avgRating",
-            },
-          },
           totalAvgRating: { $avg: "$avgRating" },
         },
       },
@@ -1540,12 +1593,47 @@ const hostAllEventAvgRatingIntoDb = async (hostId: string) => {
         $project: {
           _id: 0,
           totalAvgRating: { $round: ["$totalAvgRating", 1] },
-          // events: 1,
         },
       },
     ]);
 
-    return result || { events: [], totalAvgRating: 0 };
+    const totalAvgRating = ratingResult?.totalAvgRating ?? 0;
+
+    // 3. Calculate total attendance across all host events
+    let totalAttendance = 0;
+    if (eventIds.length > 0) {
+      // Sum of tickets for paid events
+      const paidTickets = await paymentgateways.aggregate([
+        {
+          $match: {
+            eventId: { $in: eventIds },
+            payment_status: payment_status.paid,
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalTickets: { $sum: { $ifNull: ["$ticketCount", 1] } },
+          },
+        },
+      ]);
+      const paidTicketsCount = paidTickets[0]?.totalTickets ?? 0;
+
+      // Confirmed joined group members
+      const joinUsersCount = await joinusers.countDocuments({
+        eventId: { $in: eventIds },
+        isJoin: true,
+        isDelete: { $ne: true },
+      });
+
+      totalAttendance = paidTicketsCount + joinUsersCount;
+    }
+
+    return {
+      totalAvgRating,
+      totalAttendance,
+      totalEvents,
+    };
   } catch (error: any) {
     console.error("Error fetching host all event avg rating:", error);
     throw new AppError(

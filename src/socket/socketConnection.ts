@@ -3,6 +3,7 @@ import { Server as ChatServer, Socket } from 'socket.io';
 import users from '../app/modules/user/user.model';
 import conversations from '../app/modules/conversation/conversation.model';
 import handleChatEvents from './handleChatEvents';
+import handleLiveStreamEvents from './handleLiveStreamEvents';
 import mongoose from 'mongoose';
 
 let io: ChatServer;
@@ -55,6 +56,7 @@ const connectSocket = (server: HTTPServer) => {
     userConversations.forEach((conv) => socket.join(conv._id.toString()));
 
     handleChatEvents(io, socket, currentUserId);
+    handleLiveStreamEvents(io, socket, currentUserId);
 
     console.log('User connected and rooms joined:', currentUserId);
 
