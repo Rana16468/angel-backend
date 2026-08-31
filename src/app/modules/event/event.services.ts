@@ -601,7 +601,7 @@ const findBySpecificEventIntoDb = async (id: string,query: Record<string, unknow
       .findOne({ eventId: id }, { _id: 1 })
       .populate(
         "eventId",
-        "event_title description photo date starting_time ending_time audience_settings.age venue_facilities price audience_settings.event_location audience_settings.ticket_price audience_settings.price"
+        "event_title description photo date starting_time ending_time audience_settings.age venue_facilities price audience_settings.event_location audience_settings.ticket_price audience_settings.price audience_settings.ticket_point_value"
       )
       .lean(); // convert to plain object
 
