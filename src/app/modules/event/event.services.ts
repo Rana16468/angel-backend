@@ -160,9 +160,7 @@ const MyEventListIntoDb = async (
         hostId
       ,
       })
-      .select(
-        "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.ticket_price"
-      );
+      .select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.ticket_price audience_settings.ticket_point_value");
 
     const queryBuilder = new QueryBuilder(baseQuery, query)
       .search(searching_event)
@@ -232,9 +230,7 @@ const MyEventTypeWaysFilteringIntoDb = async (
         const allEventListQuery = new QueryBuilder<any>(
           events
             .find({ hostId })
-            .select(
-              "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon"
-            ),
+            .select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon audience_settings.ticket_point_value"),
           query
         )
           .search([])
@@ -266,9 +262,7 @@ const MyEventTypeWaysFilteringIntoDb = async (
         const eventListQuery = new QueryBuilder<any>(
           events
             .find({ hostId })
-            .select(
-              "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon"
-            ),
+            .select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon audience_settings.ticket_point_value"),
           query
         )
           .search([])
@@ -1084,9 +1078,7 @@ const findByAllLiveEventFilteringIntoDb = async (query: Record<string, any>) => 
     // Base Query
     // -----------------------------
     const baseQuery = new QueryBuilder<any>(
-      events.find({}).select(
-        "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.ticket_price audience_settings.event_location.lat audience_settings.event_location.lon"
-      ),
+      events.find({}).select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.ticket_price audience_settings.event_location.lat audience_settings.event_location.lon audience_settings.ticket_point_value"),
       {}
     )
       .search([]) // add search fields if needed
@@ -1165,9 +1157,7 @@ const findByUpcommingAndPastEventFilteringIntoDb = async (
     // Base Query
     // -----------------------------
     const baseQuery = new QueryBuilder<any>(
-      events.find({}).select(
-        "photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon"
-      ),
+      events.find({}).select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price audience_settings.event_location.lat audience_settings.event_location.lon audience_settings.ticket_point_value"),
       query
     )
       .search([])
@@ -1437,7 +1427,7 @@ const findByAllEventIntoDb = async (
   try {
     const baseQuery = events
       .find({ })
-      .select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price hostId event_category ").populate([
+      .select("photo audience_settings.max_capacity event_title createdAt date starting_time ending_time audience_settings.price hostId event_category  audience_settings.ticket_point_value").populate([
         {
           path: "hostId",
           select: "name email",
