@@ -25,7 +25,7 @@ const  findBySpecificEventCommentFiltering:RequestHandler=catchAsync(async(req ,
       sendResponse(res, {
            success: true,
            statusCode: status.OK,
-           message: "Successfully Recorded Replies",
+           message: "Successfully Retrieved Comments",
            data: result,
          });
 });
@@ -37,7 +37,7 @@ const findBySpecificCommentReplyFiltering:RequestHandler=catchAsync(async(req , 
       sendResponse(res, {
            success: true,
            statusCode: status.OK,
-           message: "Successfully Recorded Replies",
+           message: "Successfully Retrieved Replies",
            data: result,
          });
 });

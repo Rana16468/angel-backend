@@ -1,3 +1,5 @@
+import dns from 'node:dns';
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 import http, { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
