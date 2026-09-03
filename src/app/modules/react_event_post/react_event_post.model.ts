@@ -1,23 +1,23 @@
 import { Schema, model, Types } from "mongoose";
 import { CommantEventPostModel, LiveEventCommentModel, ReactEventPostModel, ShareEventCommentModel, TCommantEventPost, TLiveEventComment, TReactEventPost, TShareEventComment } from "./react_event_post.interface";
-
+import users from "../user/user.model";
 
 const TreactEventPostSchema = new Schema<TReactEventPost, ReactEventPostModel>(
   {
     eventpostId: {
       type: Schema.Types.ObjectId,
-      ref: "eventposts", 
+      ref: "eventposts",
       required: true,
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "users", 
+      ref: "users",
       required: true,
     },
-    isReact:{
-        type: Boolean,
-        required:[true ,'isReact is required'],
-        default:false
+    isReact: {
+      type: Boolean,
+      required: [true, 'isReact is required'],
+      default: false
 
     },
     isDelete: {
@@ -52,9 +52,9 @@ TreactEventPostSchema.statics.isReactEventPostCustomId = async function (
   return this.findOne({ _id: id, isDelete: false });
 };
 
- const reacteventposts= model<TReactEventPost, ReactEventPostModel>(
+const reacteventposts = model<TReactEventPost, ReactEventPostModel>(
   "reacteventposts",
- TreactEventPostSchema
+  TreactEventPostSchema
 );
 
 export default reacteventposts;
@@ -84,13 +84,13 @@ const TcommantEventPostSchema = new Schema<TCommantEventPost, CommantEventPostMo
     },
     isDelete: {
       type: Boolean,
-      required:[false , 'isDelete is not  required'],
+      required: [false, 'isDelete is not  required'],
       default: false,
     }
-   
+
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
@@ -128,13 +128,13 @@ const TLiveEventCommentSchema = new Schema<TLiveEventComment>(
     eventId: {
       type: Schema.Types.ObjectId,
       ref: 'events',
-      index:true,
+      index: true,
       required: true,
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'users',
-      index:true,
+      index: true,
       required: true,
     },
     comments: {
@@ -194,18 +194,18 @@ export const liveeventcomments = model<TLiveEventComment, LiveEventCommentModel>
 const TShareEventCommentSchema = new Schema<TShareEventComment>(
   {
     eventpostId: {
-      type:Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "eventposts", // adjust collection name if different
       required: true,
-      index:true
+      index: true
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: "users", // adjust collection name if different
       required: true,
-      index:true
+      index: true
     },
-   
+
     isDelete: {
       type: Boolean,
       default: false,
